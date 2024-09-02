@@ -11,8 +11,8 @@ from django.db.models import Count , Sum
 from django.core.files.storage import FileSystemStorage
 from .models import CustomUser , ContactUsForm , ProductInventory, WebsiteOrder , WebsiteOrderItems
 
-engine = create_engine('postgresql+psycopg2://postgres:mustafabohra@localhost:5432/citymart')
-
+# engine = create_engine('postgresql+psycopg2://postgres:mustafabohra@localhost:5432/citymart')
+engine = create_engine('postgresql+psycopg2://mustafa:3KIzwhrFvXe8oy4XFRUfydq68a94T1Nj@dpg-cram02aj1k6c73ch26qg-a.oregon-postgres.render.com/citymart')
 
 # Create your views here.
 @csrf_exempt
