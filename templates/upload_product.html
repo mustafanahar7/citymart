@@ -1,0 +1,89 @@
+{% extends 'adminnavbar.html' %}
+
+{% block main_content %}
+<div class="upload_data" style="display: flex; gap: 20px;">
+
+    <!-- First column: Upload Product Data -->
+    <div class="card" style="flex: 1;">
+        <div class="card-header text-center">
+            <h2>Upload Product File</h2>
+        </div>
+        <div class="card-body">
+            {% if msg %}
+                <div class="alert alert-success mt-2 text-center" role="alert">
+                    <strong>{{msg| capfirst}}</strong>
+                </div>
+            {% endif %}
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label><b>Download Product Template</b></label>
+                    <a href="{% url 'download_template' %}" class="btn btn-success btn-sm" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+            <hr>
+            <form id='uploadproductform' action="{% url 'uploadproduct' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="productFile">Choose Excel File</label><br><br>
+                    <input type="file" class="form-control-file" id="productFile" name="productFile" accept=".xlsx" required>
+                </div>
+                <input type="hidden" id="button_pressed" name="button_pressed" value="">
+                <button type="button" class="btn btn-danger btn-block" id='uploadproduct'  onclick="upload_product('upload_product')">Upload</button>
+
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Second column: Upload Category Data -->
+    <div class="card" style="flex: 1;">
+        <div class="card-header text-center">
+            <h2>Add New Category</h2>
+        </div>
+        <div class="card-body">
+            {% if addcat %}
+                <div class="alert alert-success mt-2 text-center" role="alert">
+                    <strong>{{addcat| capfirst}}</strong>
+                </div>
+            {% endif %} 
+            <form id='uploadcategoryform' action="{% url 'uploadproduct' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="category_name">Category Name</label>
+                    <input type="text" class="form-control" name="category_name" id="category_name" required>
+                    <hr>
+                    <label for="categoryFile">Choose Category Image</label>
+                    <input type="file" class="form-control-file" id="categoryFile" name="categoryFile" accept=".jpg, .png, .jpeg" required>
+                </div>
+                <input type="hidden" id="button_pressed_category" name="button_pressed" value="">
+                <button type="button" class="btn btn-danger btn-block" id='add_category' name="add_category" onclick="addcategory('add_category')">Add</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function upload_product(button){
+        document.getElementById('button_pressed').value = button;
+        document.getElementById('uploadproductform').submit();
+    } 
+
+    function addcategory(button){
+        console.log('Add category button clicked');
+        document.getElementById('button_pressed_category').value = button;
+        document.getElementById('uploadcategoryform').submit();
+    } 
+
+</script>
+
+{% endblock main_content %}

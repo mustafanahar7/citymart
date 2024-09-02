@@ -1,0 +1,208 @@
+{% extends 'navbar.html' %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+{% endblock css %}
+
+{% block main_content %}
+
+    <div class="loader" id="loader"></div>
+
+    <div class="cart-container mt-3">
+       <div class="header-container">
+            <h1>Your Cart</h1>
+            <h4 id="user">{{ user.full_name }}</h4>
+        </div>
+        <!-- <form method="POST" action="{% url 'cartpage' %}"> -->
+         <form method="POST" action="{% url 'cartpage' %}" id="order_place">
+            {% csrf_token %}
+            <div id="cart-items" class="cart-items">
+                
+                {% for item in cart_list %}
+                <div class="cart-item" data-id="{{ item.product_code }}">
+                    <div class="item-details">
+                        <h3>{{ item.product_name }}</h3>
+                        <p>{{ item.unit }}</p>
+                        <p>Price: Rs <span class="price">{{ item.price }}</span></p>
+                    </div>
+                    <div class="item-quantity">
+                        <button type="button" class="decrease">-</button>
+                        <span class="qty" name="quantity_{{ item.product_code }}">{{ item.quantity|default:1 }}</span>
+                        <button type="button" class="increase">+</button>
+                    </div>
+                    <!-- Hidden input for quantity -->
+                    <input type="hidden" name="quantity_{{ item.product_code }}" id="hidden-quantity-{{ item.product_code }}" value="{{ item.quantity|default:1 }}">
+
+                    <div class="item-total">
+                        Rs <span class="item-total-amount">{{ item.price|floatformat:2 }}</span>
+                    </div>
+                    <div class="item-delete">
+                        <button type="button" class="delete-item">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                    <input type="hidden" name="product_name_{{ item.product_code }}" value="{{ item.product_name }}">
+                {% endfor %}
+            </div>
+            <div class="cart-total">
+                <input type="hidden" id="grand-total" name="grand_total" value="0.00">
+                <h2>Total Amount: Rs <span id="total-amount">0.00</span></h2>
+            </div>
+
+            <div class="place-order mt-4">
+                <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
+            </div>
+        <!-- /form> -->
+         
+
+
+         <!-- Delivery Details Form (Initially Hidden) -->
+        <div id="delivery-details-form" style="display: none;" class="mt-4">
+            <h2>Delivery Details</h2>
+            {% comment %} <form method="POST" action="{% url 'cartpage' %}" id="order_place"> {% endcomment %}
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Customer Name:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile_number">Mobile Number :</label>
+                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="payment-method">Payment Method:</label>
+                    <select id="payment-method" name="payment_method" class="form-control" required>
+                        <option value="cod">Cash on Delivery (COD)</option>
+                        <option value="online">Pay Now</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="hidden" id="button_pressed" name="button_pressed" value="">
+                    <button type="button" id="rzp-button1" class="btn btn-success" onclick='showConfirmationPopup("confirm_order")'>Confirm Order</button>
+                </div>
+
+                <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+                <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+                
+            </form>
+        </div>
+    </div>
+    </div>
+
+   
+    
+    <script src="/static/js/cart.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script>
+         document.getElementById('place-order-btn').addEventListener('click',function (event){
+            event.preventDefault();
+             document.getElementById('delivery-details-form').style.display ='block';
+         });
+        
+    </script>
+
+    <script>
+         {% comment %} function showConfirmationPopup(buttonName1) {
+                Swal.fire({
+                title: 'Confirm Sale',
+                text: 'Are you sure you want to proceed with this sale?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form when the user confirms
+                        document.getElementById('button_pressed').value = buttonName1;
+
+                        // Make sure quantities are updated in hidden inputs before submitting
+                        document.querySelectorAll('.item-quantity').forEach(function(element) {
+                            const productCode = element.closest('.cart-item').getAttribute('data-id');
+                            const qty = element.querySelector('.qty').innerText.trim();
+                            document.getElementById('hidden-quantity-' + productCode).value = qty;
+                        });
+                        document.getElementById('order_place').submit();
+                    }
+                    });
+                } {% endcomment %}
+
+                // Initialize Razorpay payment options
+        var options = {
+            "key": "rzp_live_tJQK6qtB5hVPyZ", // Enter the Key ID generated from the Dashboard
+            "amount": 0, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "City Mart",
+            "description": "Test Transaction",
+            "image": "https://seeklogo.com/images/M/mt-logo-158D9F5A5E-seeklogo.com.png",
+            "order_id": "{{ payment_id }}", // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                // Make sure quantities are updated in hidden inputs before submitting
+                        document.querySelectorAll('.item-quantity').forEach(function(element) {
+                            const productCode = element.closest('.cart-item').getAttribute('data-id');
+                            const qty = element.querySelector('.qty').innerText.trim();
+                            document.getElementById('hidden-quantity-' + productCode).value = qty;
+                        });
+                Swal.fire('Payment Successful!', 'Your payment was successful.', 'success');
+                document.getElementById('loader').style.display = 'block';
+                document.getElementById('order_place').submit(); // Submit the form after payment is successful
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        // Event listener for Razorpay payment button
+        document.getElementById('rzp-button1').onclick = function (e) {
+            e.preventDefault();
+            // Get the grand total amount and set it in the Razorpay options
+            const grandTotal = parseFloat(document.getElementById('total-amount').textContent) * 100;
+ // Convert to paise
+            options.amount = grandTotal.toFixed(0); // Ensure it's an integer value
+            
+                Swal.fire({
+                title: 'Confirm Order',
+                text: 'Are you sure you want to place this order?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    const paymentMode = document.querySelector('select[name="payment_method"]').value;
+                    if (paymentMode === 'online') {
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    } else if (paymentMode === 'cod') {
+                        // Make sure quantities are updated in hidden inputs before submitting
+                        document.querySelectorAll('.item-quantity').forEach(function(element) {
+                            const productCode = element.closest('.cart-item').getAttribute('data-id');
+                            const qty = element.querySelector('.qty').innerText.trim();
+                            document.getElementById('hidden-quantity-' + productCode).value = qty;
+                        });
+                        document.getElementById('loader').style.display = 'block';
+                        document.getElementById('order_place').submit();
+                        
+                    }
+                    
+                }
+                });
+            }
+             
+
+            </script>
+{% endblock main_content %}

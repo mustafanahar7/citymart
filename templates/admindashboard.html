@@ -1,0 +1,482 @@
+{% extends 'adminnavbar.html' %}
+
+{% load static %}
+
+    <!-- Include Chart.js and Chart.js Data Labels plugin -->
+    {% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> {% endcomment %}
+    
+    {% block css %}  
+       <link rel="stylesheet" href="/static/css/admindashboard.css" >
+
+    {% endblock css %}
+
+    {% block main_content %}
+        <div class="dashboard-container">
+            <div class="heading">
+                <h1>City Mart Analysis</h1>
+            </div>
+            <div class="table-analysis">
+                <h4>Overall Sales Analysis</h4>
+                <table>
+                    <tr>
+                        <th>Source</th>
+                        <th>Income</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="today-table-analysis">
+                <h4>Today's Sales Data</h4>
+                <table>
+                    <tr>
+                        <th>Source</th>
+                        <th>Income</th>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+
+
+        <!-- Chart container for inventory pie chart and sales bar chart -->
+        <div class="chart-container">
+            <div class="chart">
+                <canvas id="inventoryPieChart"></canvas>
+            </div>
+
+            <div class="chart">
+                <canvas id="PaymentMode"></canvas>  
+            </div>
+
+            <div class="chart">
+                <canvas id="salesBarChart"></canvas>  
+            </div>
+
+            <div class="chart">
+                <canvas id="ShopsalesBarChart"></canvas>  
+            </div>
+
+            {% comment %} <div class="chart">
+                <canvas id="TotalSales"></canvas>  
+            </div> {% endcomment %}
+        </div>
+      
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+        
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            async function fetchInventoryData() {
+                try {
+                    const response = await fetch('/api/inventory-data/');
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error fetching inventory data:', error);
+                }
+            }
+
+            async function createInventoryChart() {
+                const data = await fetchInventoryData();
+                if (!data) {
+                    console.error('No data available');
+                    return;
+                }
+
+                // Create inventory pie chart
+                const inventoryCtx = document.getElementById('inventoryPieChart').getContext('2d');
+                new Chart(inventoryCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.categories,
+                        datasets: [{
+                            label: 'Inventory',
+                            data: data.inventories,
+                            backgroundColor: [
+                                'rgba(255, 50, 50, 1)', // Red with opacity
+                                'rgba(54, 162, 100, 1)', // Blue with opacity
+                                'rgba(255, 206, 86, 1)', // Yellow with opacity
+                                'rgba(75, 192, 192, 1)', // Green with opacity
+                                'rgba(153, 102, 255, 1)', // Purple with opacity
+                                'rgba(255, 159, 64, 1)' // Orange with opacity
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'left',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.raw}`;
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Category-wise Inventory Distribution',
+                                position: 'top',
+                                font: {
+                                    size: 16
+                                },
+                                padding: {
+                                    top: 10,
+                                    bottom: 30
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Create sales bar chart
+                const salesCtx = document.getElementById('salesBarChart').getContext('2d');
+                new Chart(salesCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.sales_date,
+                        datasets: [{
+                            label: 'Sales Count',
+                            data: data.sales_order_count,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Website Sales Distribution',
+                            position: 'top',
+                            font: {
+                                size: 16
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: 'black',
+                            font: {
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Number of Sales',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // Create sales bar chart
+                
+            // Create sales bar chart
+                const paymentModeCtx = document.getElementById('PaymentMode').getContext('2d');
+                new Chart(paymentModeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.payment_label_list,
+                        datasets: [{
+                            label: 'Payments',
+                            data: data.payment_list_count,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Payment Method Distribution',
+                            position: 'top',
+                            font: {
+                                size: 16
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: 'black',
+                            font: {
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Payment Methods',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Number of Payments',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+
+            // Create total sales amount  bar chart
+                const totalSalesCtx = document.getElementById('TotalSales').getContext('2d');
+                new Chart(totalSalesCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.total_sales_label,
+                        datasets: [{
+                            label: 'Total Sales',
+                            data: data.total_sales_data,
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',  // Teal
+                                'rgba(255, 159, 64, 0.2)',  // Orange
+                                'rgba(153, 102, 255, 0.2)', // Purple
+                                'rgba(54, 162, 235, 0.2)',  // Blue
+                                'rgba(255, 206, 86, 0.2)',  // Yellow
+                                'rgba(231, 76, 60, 0.2)'    // Red
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',  // Teal
+                                'rgba(255, 159, 64, 1)',  // Orange
+                                'rgba(153, 102, 255, 1)', // Purple
+                                'rgba(54, 162, 235, 1)',  // Blue
+                                'rgba(255, 206, 86, 1)',  // Yellow
+                                'rgba(231, 76, 60, 1)'    // Red
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales Distribution',
+                            position: 'top',
+                            font: {
+                                size: 16
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: 'black',
+                            font: {
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Sources',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Amount (in Rs)',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            
+
+            }
+
+            
+
+            createInventoryChart();
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    fetch('/api/inventory-data/')
+        .then(response => response.json())
+        .then(data => {
+            const table = document.querySelector('.table-analysis table');
+            
+            const sources = data.total_sales_label;
+            const incomes = data.total_sales_data;
+
+            sources.forEach((source, index) => {
+                let row = document.createElement('tr');
+                
+                let sourceCell = document.createElement('td');
+                sourceCell.textContent = source;
+                row.appendChild(sourceCell);
+                
+                let incomeCell = document.createElement('td');
+                incomeCell.textContent = '₹ ' + incomes[index] ;
+                row.appendChild(incomeCell);
+
+                table.appendChild(row);
+            });
+
+             // Populate the today sales table
+                const todayTable = document.querySelector('.today-table-analysis table');
+                const todaySources = data.today_sales_label;
+                const todayIncomes = data.today_sales_data;
+
+                todaySources.forEach((source, index) => {
+                    let row = document.createElement('tr');
+                    
+                    let sourceCell = document.createElement('td');
+                    sourceCell.textContent = source;
+                    row.appendChild(sourceCell);
+                    
+                    let incomeCell = document.createElement('td');
+                    incomeCell.textContent = '₹ ' + todayIncomes[index];
+                    row.appendChild(incomeCell);
+
+                    todayTable.appendChild(row);
+                });
+
+
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+</script>
+
+    {% endblock main_content %}
+

@@ -1,0 +1,49 @@
+{% extends 'navbar.html' %}
+
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/category.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block main_content %}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">{{selected_category}}</h2>
+    <div class="category-grid">
+         {% comment %} <h1>{{categ}}</h1> {% endcomment %} 
+        {% if categ %}
+            {% for items in categ %}
+            <form method="POST" action="{% url 'add_to_cart' %}">
+                {% csrf_token %}
+                <div class="category-card">
+                    <img src="/media/{{items.image}}" alt="Category 1">
+                    <h5>{{items.name}}</h5>
+                    <h5>{{items.product_price}}</h5>
+
+                    <select class="form-select form-select-sm" name="product_unit">
+                        {% for units,price in items.units %}
+                        <option value="{{units}}">
+                            <span class="unit-price">
+                                <strong>{{units}}</strong> - <strong>₹ {{price}}</strong>
+                            </span>
+                        </option>
+                        {% endfor %}
+                    </select>  
+
+                    <button class="btn btn-primary btn-sm w-100 mt-2" >Add to Cart</button>
+
+                    <input type="hidden" name="product_name" value="{{items.name}}">
+                </div>
+            </form>
+            {% endfor %}
+        {% else %}
+                <div class="alert alert-danger text-center">
+                    <strong>No Product Found</strong>
+                </div>
+        {% endif %}
+        
+        <!-- Add more category cards as needed -->
+    </div>
+</div>
+
+{% endblock main_content %}

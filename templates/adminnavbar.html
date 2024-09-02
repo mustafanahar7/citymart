@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/images/logo/logo1.png">
+    <title>CityMart Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/adminnavbar.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap">
+
+
+    {% block css %}
+    {% endblock css %}
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <h1>Admin Dashboard</h1>
+            <h5>{{ user.full_name }}</h5>
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="{% static 'images/logo/logo1.png' %}" alt="CityMart Logo">
+            </div>
+            <ul>
+                <li><a href="{% url 'admindashboardpage' %}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li><a href="{% url 'admin_product_inventory' %}"><i class="fas fa-box"></i> <span>Products</span></a></li>
+                <li><a href="{% url 'uploadproduct' %}"><i class="fas fa-upload"></i> <span>Upload Product File</span></a></li>
+                <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                <li><a href="#"><i class="fas fa-users"></i> <span>Customers</span></a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+                <li><a href="{% url 'logoutpage' %}"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            {% block main_content %}
+            {% endblock main_content %}
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

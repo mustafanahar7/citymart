@@ -1,0 +1,28 @@
+{% extends 'navbar.html' %}
+
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/category.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block main_content %}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">Browse Categories</h2>
+    <div class="category-grid">
+        {% if data %}
+            {% for img , img_name in data %}
+                <a href='/categorywise/{{img_name}}' ><div class="category-card">
+                    <img src="/static/images/category/{{img}}" alt="Category 1">
+                    <h5>{{img_name}}</h5>
+                </div></a>
+            {% endfor %}
+        {% else %}
+                <h2> No Category Found </h2>
+        {% endif %}
+        
+        <!-- Add more category cards as needed -->
+    </div>
+</div>
+
+{% endblock main_content %}

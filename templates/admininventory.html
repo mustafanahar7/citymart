@@ -1,0 +1,91 @@
+{% extends 'adminnavbar.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/admininventory.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+
+{% endblock css %}
+
+{% block main_content %}
+    {% if inventory %}
+
+    <div class="container ml-4">
+            <!-- Search Bar -->
+             <div class="input-group mb-3">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
+                </span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by Product Name or Code" aria-label="Search" aria-describedby="searchIcon">
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover" id="inventoryTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product Code</th>
+                            <th scope="col">Product Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Product Category</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Last Purchase</th>
+                            <th scope="col">Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in inventory %}
+                            <tr>
+                                <td>{{ product.product_code }}</td>
+                                 <td><img src="/media/{{ product.product_image }}" alt="{{ product.product_name }}"></td>
+                                <td>{{ product.product_name }}</td>
+                                <td>{{ product.product_category }}</td>
+                                <td>{{ product.qty|floatformat:"0" }}</td>
+                                <td>{{ product.product_unit }}</td>
+                                <td>{{ product.last_purchase }}</td>
+
+                                {% if product.qty > 0 %}
+                                    <td style="color:green;">Available</td>
+                                {% else %}
+                                    <td style="color:red;">Out Of Stock</td>
+                                {% endif %}
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    {% else %}
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                No inventory available.
+            </div>
+        </div>
+    {% endif %}
+
+     <script>
+       // JavaScript for filtering the table based on the search input
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll('#inventoryTable tbody tr');
+
+            rows.forEach(function(row) {
+                let productCode = row.cells[0].textContent.toUpperCase();
+                let productName = row.cells[2].textContent.toUpperCase();
+                let productCategory = row.cells[3].textContent.toUpperCase();
+
+                if (productCode.indexOf(filter) > -1 || productName.indexOf(filter) > -1 || productCategory.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+
+{% endblock main_content %}
+
+
+   

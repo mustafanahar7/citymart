@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get User Location</title>
+</head>
+<body>
+    <form>
+        <label for="location">Your Location:</label>
+        <input type="text" id="location" name="location" readonly>
+    </form>
+
+    <script>
+        // Check if the Geolocation API is supported by the browser
+        if (navigator.geolocation) {
+            // Fetch the user's current position
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        // Function to handle the position data
+        function showPosition(position) {
+            // Extract latitude and longitude
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // Set the value of the input field to the location coordinates
+            document.getElementById('location').value = "Latitude: " + lat + ", Longitude: " + lon;
+
+            // Optional: Convert coordinates to a human-readable address using an API (e.g., Google Maps API, OpenCage Geocoder, etc.)
+        }
+
+        // Function to handle errors
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

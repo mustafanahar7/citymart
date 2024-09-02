@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", 'Roboto', "Helvetica Neue", sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+}
+
+.container{
+    width: 100%;
+}
+
+/* Top Bar */
+.top-bar {
+    background-color: #DF0000;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.logo img {
+    width: 120px;
+}
+
+.top-bar h1 {
+    margin-left: 15px;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #eeeaea;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    padding-top: 20px;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin-top: 50px;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: black;
+    text-decoration: none;
+    padding: 10px 30px;
+    display: block;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: #DF0000;
+    color: #fff;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+}
+
+/* WebKit Browsers (Chrome, Safari) */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #DF0000;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    margin-top: 80px;
+    /* 50px for top bar + 10px margin */
+    transition: margin-left 0.3s ease;
+    padding: 30px;
+    margin-bottom: 150px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .toggle-btn {
+        display: block;
+    }
+
+    .sidebar {
+        width: 80px;
+        left: -250px;
+            /* Hide the sidebar */
+    }
+
+    .sidebar.show {
+        left: 0;
+        /* Show the sidebar when toggle is active */
+    }
+
+    .sidebar ul li a {
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .sidebar ul li a span {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 80px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .top-bar h1 {
+        font-size: 16px;
+    }
+}   

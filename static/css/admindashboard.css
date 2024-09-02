@@ -1,0 +1,215 @@
+
+.dashboard-container h1 {
+     text-align: center;
+     margin-bottom: 20px;
+     color: #333;
+     /* Darker text color */
+ }
+
+ .chart-container {
+     display: flex;
+     justify-content: space-around;
+     gap: 20px;
+     /* Adjust the gap between charts */
+     margin-top: 20px;
+     flex-wrap: wrap;
+     /* Allow charts to wrap to new line */
+ }
+
+ .chart {
+     flex: 1 1 calc(50% - 20px);
+     /* Adjust width to fit two charts in a row */
+     max-width: 100%;
+     /* Ensure chart does not exceed container */
+     height: 400px;
+     /* Fixed height for consistency */
+     border-radius: 8px;
+     box-shadow: 0 5px 9px rgba(0, 0, 0, 0.1);
+     padding: 10px;
+
+ }
+
+
+
+ .table-analysis table,
+ .today-table-analysis table {
+     width: 100%;
+     border-collapse: collapse;
+     font-family: 'Arial', sans-serif;
+     color: #333;
+ }
+
+ .table-analysis th,
+ .table-analysis td,
+ .today-table-analysis th,
+ .today-table-analysis td {
+     padding: 12px 15px;
+     text-align: left;
+ }
+
+ .table-analysis th,
+ .today-table-analysis th {
+     background-color: #4CAF50;
+     color: white;
+     font-weight: bold;
+ }
+
+ .table-analysis tr:nth-child(even),
+ .today-table-analysis tr:nth-child(even) {
+     background-color: #f2f2f2;
+ }
+
+ .table-analysis tr:hover,
+ .today-table-analysis tr:hover {
+     background-color: #e0e0e0;
+     transition: background-color 0.3s ease;
+ }
+
+ .table-analysis td,
+ .today-table-analysis td {
+     border-bottom: 1px solid #ddd;
+ }
+
+ .table-analysis th:first-child,
+ .table-analysis td:first-child,
+ .today-table-analysis th:first-child,
+ .today-table-analysis td:first-child {
+     border-radius: 8px 0 0 8px;
+ }
+
+ .table-analysis th:last-child,
+ .table-analysis td:last-child,
+ .today-table-analysis th:last-child,
+ .today-table-analysis td:last-child {
+     border-radius: 0 8px 8px 0;
+ }
+
+ .table-analysis td,
+ .today-table-analysis td {
+     font-size: 16px;
+ }
+
+ .table-analysis,
+ .today-table-analysis {
+     border-radius: 8px;
+     /* Rounds the corners of the container */
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+     /* Subtle shadow for depth */
+     padding: 20px;
+     /* Padding around the table */
+     background: #ffffff;
+     /* Background color of the container */
+     margin: 20px 0px;
+     /* Margin to separate from other content */
+ }
+
+
+ .dashboard-container {
+         
+     /* position: fixed; */
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 0px 20px;
+     background: linear-gradient(to bottom right, #d9534f, #fff);
+     border-radius: 20px 20px 0px 0px;
+ }
+
+ .heading {
+     text-align: left;
+     padding: 0px 20px;
+     font-family: 'Poppins', sans-serif;
+ }
+
+ .heading h1 {
+     margin: 0;
+     font-size: 40px;
+     font-weight: 700;
+     /* Slightly bold for emphasis */
+     color: #ffffff;
+     /* Dark gray for text */
+     letter-spacing: 0.5px;
+ }
+
+ .table-analysis h4,
+ .today-table-analysis h4 {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     /* Consistent font style */
+     color: #333;
+     /* Text color */
+     font-size: 18px;
+     /* Font size */
+     margin-bottom: 15px;
+     /* Space between heading and table */
+     border-bottom: 2px solid #4CAF50;
+     /* Border under the heading */
+     padding-bottom: 10px;
+     /* Space between heading text and border */
+     text-align: center;
+ }
+
+
+ /* Responsive Styles */
+ @media (max-width: 1024px) {
+     .chart-container {
+         flex-direction: column;
+         align-items: center;
+     }
+
+     .chart {
+         flex: 1 2 100%;
+         max-width: 100%;
+     }
+
+     .heading h1 {
+         font-size: 32px;
+     }
+ }
+
+ @media (max-width: 768px) {
+     .dashboard-container {
+         padding: 10px;
+     }
+
+     .chart-container {
+         flex-direction: column;
+         gap: 10px;
+     }
+
+     .chart {
+         height: 300px;
+     }
+
+     .heading h1 {
+         font-size: 28px;
+     }
+ }
+
+ @media (max-width: 480px) {
+    
+
+     .dashboard-container {
+         flex-direction: column;
+         text-align: center;
+     }
+
+     .heading h1 {
+         font-size: 24px;
+     }
+
+     .chart {
+         height: 250px;
+     }
+
+     .table-analysis,
+     .today-table-analysis {
+         padding: 15px;
+     }
+
+     .table-analysis th,
+     .today-table-analysis th,
+     .table-analysis td,
+     .today-table-analysis td {
+         padding: 10px;
+     }
+ }

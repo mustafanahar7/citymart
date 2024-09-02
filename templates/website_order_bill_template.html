@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .company-name {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: right;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .content h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: #007BFF;
+        }
+        .content p {
+            margin: 10px 0;
+        }
+        .order-details {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .order-details th,
+        .order-details td {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        .order-details th {
+            background-color: #f0f0f0;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src='https://seeklogo.com/images/M/mt-logo-158D9F5A5E-seeklogo.com.png' alt='img' class='company-logo'/>
+            <h1 class="company-name">City Mart</h1>
+        </div>
+        <div class="content">
+            <h2>Order Confirmation</h2>
+            <p>Hello {{ customer_name }},</p>
+            <p>Thank you for your purchase! Your order number is <strong>{{ order_number }}</strong>.</p>
+            <h3>Order Details:</h3>
+            <table class="order-details">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Unit</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.product_name }}</td>
+                        <td>{{ item.product_unit }}</td>
+                        <td>{{ item.product_qty }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.total_amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" style="text-align: right;">Total Amount:</th>
+                        <th>₹ {{ total_bill_amount }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <h3>Shipping Information:</h3>
+            <p>{{ address }}</p>
+            <p>{{ pin_code }}</p>
+            <p>If you have any questions, feel free to contact us at support@example.com.</p>
+            <p>Best regards,<br>Maimoon Traders Team</p>
+        </div>
+        <div class="footer">
+            &copy; 2024 City Mart. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

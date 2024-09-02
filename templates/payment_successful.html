@@ -1,0 +1,27 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+{% block css %}
+     <link rel="stylesheet" href="/static/css/payment_success.css">
+{% endblock css %}
+
+{% block main_content %}
+
+    <div class="container">
+        <div class="success-message">
+            <img src="/static/images/logo/payment_success.png" alt="Success" class="success-icon">
+            {% if order_id %}
+                <h1>Order Placed </h1>
+                <h3>Payment Successful !</h3>
+                <p>Payment ID - {{payment_id}}</p>
+            {% else %}
+                <h1>Order Placed !</h1>
+                <p>Payment Type - Cash On Delivery</p>
+            {% endif %}
+            <p>Thank you for your purchase. Your order has been placed successfully.</p>
+            <a href="{% url 'homepage' %}" class="button">Continue Shopping</a>
+        </div>
+    </div>
+
+{% endblock main_content %}
+
