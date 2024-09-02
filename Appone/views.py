@@ -86,6 +86,7 @@ def HomePage(request):
         img_name.append(files.split('.')[0])
     files = zip(img,img_name)
     ####################
+    print(img)
     
     most_purchased_product = WebsiteOrderItems.objects.values('product_code_id').annotate(product_count=Count('product_code_id')).order_by('-product_count')[:10]
     # print('=================')
