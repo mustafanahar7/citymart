@@ -63,6 +63,32 @@
         </div>
     </div>
 
+    <!-- Third column: Upload Category Data -->
+    <div class="card" style="flex: 1;">
+        <div class="card-header text-center">
+            <h2>Add Product Image</h2>
+        </div>
+        <div class="card-body">
+            {% if addcat %}
+                <div class="alert alert-success mt-2 text-center" role="alert">
+                    <strong>{{addcat| capfirst}}</strong>
+                </div>
+            {% endif %} 
+            <form id='uploadcategoryform' action="{% url 'uploadproduct' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% comment %} <label for="category_name">Category Name</label>
+                    <input type="text" class="form-control" name="category_name" id="category_name" required>
+                    <hr> {% endcomment %}
+                    <label for="categoryFile">Select product Image</label>
+                    <input type="file" class="form-control-file" id="productImage" name="productImage" accept=".jpg, .png, .jpeg" required>
+                </div>
+                <input type="hidden" id="button_pressed_category" name="button_pressed" value="">
+                <button type="button" class="btn btn-danger btn-block" id='add_category' name="add_category" onclick="addcategory('add_category')">Add</button>
+            </form>
+        </div>
+    </div>
+
 
 </div>
 

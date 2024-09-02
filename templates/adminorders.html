@@ -17,6 +17,22 @@
                 <input type="text" id="searchInput" class="form-control" placeholder="Search by ORD No customer name or mobile number" aria-label="Search" aria-describedby="searchIcon">
             </div>
 
+            <div class="date-filter" style="display: flex; align-items: flex-end; gap: 15px; background-color: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                <div class="form-group">
+                    <label for="startDate" style="font-weight: bold; color: #495057;">Start Date:</label>
+                    <input type="date" id="startDate" class="form-control" style="border-radius: 4px; border: 1px solid #ced4da;">
+                </div>
+                            
+                <div class="form-group">
+                    <label for="endDate" style="font-weight: bold; color: #495057;">End Date:</label>
+                    <input type="date" id="endDate" class="form-control" style="border-radius: 4px; border: 1px solid #ced4da;">
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="filterTable()" style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; border: none; font-weight: bold;">Filter</button>
+            </div>
+
+
+
             <!-- Table -->
             <div class="table-responsive">
                 <table class="table table-hover" id="ordertable">
@@ -35,6 +51,7 @@
                     <tbody>
                         {% for order in orders %}
                             <tr>
+                                <tr data-date="{{ order.order_date|date:'Y-m-d' }}">
                                 <td>{{ order.order_number }}</td>
                                 <td>{{ order.order_date }}</td>
                                 <td>{{ order.customer_name }}</td>
@@ -88,6 +105,32 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+
+        function filterTable() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const table = document.getElementById('ordertable').getElementsByTagName('tbody')[0];
+            const rows = table.getElementsByTagName('tr');
+            
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const rowDate = row.getAttribute('data-date');
+                
+                if ((rowDate >= startDate && rowDate <= endDate) || (!startDate && !endDate)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+
+        }
+
+
+
+
+
        // JavaScript for filtering the table based on the search input
         document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toUpperCase();
