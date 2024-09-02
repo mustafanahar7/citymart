@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
 body,
@@ -5,7 +6,7 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Pacifico', cursive;
     overflow: hidden;
     /* Prevents scrolling */
 }
@@ -28,6 +29,55 @@ html {
 .logo {
     max-width: 200px;
     height: auto;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.heading {
+    margin: 0;
+    font-size: 3em;
+    font-family: 'Pacifico', cursive;
+    animation: slideDown 1.5s ease-in-out;
+}
+
+.text {
+    font-size: 1.2em;
+    margin: 10px 0 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+    .logo {
+        max-width: 150px;
+        /* Smaller logo */
+    }
+
+    .heading {
+        font-size: 2.5em;
+        /* Reduce heading size */
+    }
+
+    .text {
+        font-size: 1em;
+        /* Smaller text */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .logo {
+        max-width: 120px;
+        /* Even smaller logo */
+    }
+
+    .heading {
+        font-size: 2em;
+        /* Smaller heading */
+    }
+
+    .text {
+        font-size: 0.9em;
+        /* Even smaller text */
+    }
 }
 
 /* Animations */
@@ -52,20 +102,3 @@ html {
         opacity: 1;
     }
 }
-
-.logo {
-    animation: fadeIn 2s ease-in-out;
-}
-
-.heading {
-    animation: slideDown 2.5s ease-in-out;
-    margin: 0;
-    font-size: 3em;
-}
-
-.text {
-    animation: fadeIn 3s ease-in-out;
-    font-size: 1.2em;
-    margin: 10px 0 20px;
-}
-

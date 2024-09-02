@@ -73,8 +73,8 @@ def SplashPage(request):
 
 
 def HomePage(request):
-    print('<<<<<<<<<<<<<<<<<')
-    print(request.user)
+    # print('<<<<<<<<<<<<<<<<<')
+    # print(request.user)
     
     ## Render the Category from folder
     dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')
@@ -86,7 +86,7 @@ def HomePage(request):
         img_name.append(files.split('.')[0])
     files = zip(img,img_name)
     ####################
-    print(img)
+    # print(img)
     
     most_purchased_product = WebsiteOrderItems.objects.values('product_code_id').annotate(product_count=Count('product_code_id')).order_by('-product_count')[:10]
     # print('=================')
@@ -128,7 +128,7 @@ def HomePage(request):
     return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data})
 
 def CategoryPage(request):
-    dir = 'D:\personal proj\project1\citymart\static\images\category'
+    dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')
     folder_list = os.listdir(dir)
     img = []
     img_name =[]
@@ -166,7 +166,7 @@ def ContactPage(request):
 
 
 def CategoryWise(request,category):
-    print(category)
+    # print(category)
     get_product = ProductInventory.objects.filter(product_category=category,qty__gt=1)
     unique_product = get_product.values('product_name').distinct()
     
@@ -177,8 +177,8 @@ def CategoryWise(request,category):
         units = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
         price = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
         
-        print('<<<<<<<<<,')
-        print(units)
+        # print('<<<<<<<<<,')
+        # print(units)
         product_unit_and_price = zip(units,price)    
         # print('<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>.')
         # print(product_unit_and_price)
@@ -196,8 +196,8 @@ def CategoryWise(request,category):
 @login_required
 def Add_to_cart(request):
     
-    print('$$$$$$$$$$$$$')
-    print(request.user)
+    # print('$$$$$$$$$$$$$')
+    # print(request.user)
     product_name = request.POST.get('product_name')
     product_unit = request.POST.get('product_unit')
     
@@ -264,13 +264,13 @@ def Cart(request):
         request.session['cart_list']=[]
         
     cart_list = request.session['cart_list']
-    print( request.session['cart_list'])
+    # print( request.session['cart_list'])
     if request.method=="POST":
         if 'button_pressed' in request.POST:
             # print('BBBBBBBBBBBBB')
-            # # print(request.POST.get('button_pressed'))
+            # print(request.POST.get('button_pressed'))
             # print(request.POST)
-            # # print(request.session['cart_list'])
+            # print(request.session['cart_list'])
             # print('BBBBBBBBBBBBB')
             
             # Update quantities in cart_list based on form data
@@ -293,8 +293,8 @@ def Cart(request):
                 grand_amount += item['quantity']*item['price']
                 
                 
-            print('Grand Amount - ',grand_amount)
-            print('********************')
+            # print('Grand Amount - ',grand_amount)
+            # print('********************')
             # print(request.session['cart_list'])
             
             customer_name = request.POST.get('name')
@@ -308,8 +308,8 @@ def Cart(request):
             client = razorpay.Client(auth=(settings.KEY,settings.SECRET))
             payment = client.order.create(data={'amount':float(grand_amount)*100 , 'currency':'INR','payment_capture':1})
             
-            print('********************')
-            print('Paymeny Amount - ',payment)
+            # print('********************')
+            # print('Paymeny Amount - ',payment)
            
             payment_response = {'payment_id':payment_id,'order_id':order_id,'signature_id':signature_id}
             
@@ -358,10 +358,10 @@ def Cart(request):
                 update_productInventory.qty -= item['quantity']
                 update_productInventory.save()
                 
-            print('=========================== **************** ====================')
-            print(order_items)
-            print(payment_response)
-            print('=========================== **************** ====================')
+            # print('=========================== **************** ====================')
+            # print(order_items)
+            # print(payment_response)
+            # print('=========================== **************** ====================')
             send_order_confirmation_email(store_order, order_items)
             request.session['cart_list'] = []
             
@@ -414,9 +414,9 @@ import pangres
 @csrf_exempt
 def Upload_product(request):
     if request.method == 'POST':
-        print('@@@@@@@@@@@@@@@@@@@@@')
-        print(request.POST)
-        print('@@@@@@@@@@@@@@@@@@@@@')
+        # print('@@@@@@@@@@@@@@@@@@@@@')
+        # print(request.POST)
+        # print('@@@@@@@@@@@@@@@@@@@@@')
         button_pressed = request.POST.get('button_pressed')
         
         if button_pressed=="upload_product":
@@ -488,14 +488,14 @@ def get_inventory_data(request):
     get_cat = ProductInventory.objects.values('product_category').annotate(total_inventory =Sum('qty'))
     labels = [items['product_category'] for items in get_cat]
     inventory = [items['total_inventory'] for items in get_cat]
-    print(get_cat)
+    # print(get_cat)
     # print(sale_cat)
     # print(labels)
     # print(inventory)
     
     current_date = date.today()
     month_start_date = date(current_date.year,current_date.month,1)
-    print(month_start_date)
+    # print(month_start_date)
     # get_sales_report = customers_order_from_website.objects.filter(created_at__gt=current_date)
     get_websales_report = WebsiteOrder.objects.filter(order_date__gte=month_start_date)
     last_three_day_sales_report = get_websales_report.values('order_date').annotate(total_orders=Count('order_number')).order_by('order_date')
@@ -507,7 +507,7 @@ def get_inventory_data(request):
     
     payment_mode_wise = get_websales_report.values('payment_method').annotate(total_payments=Count('order_number')).order_by('payment_method')
     # print('************************************************')
-    print(payment_mode_wise)
+    # print(payment_mode_wise)
     # print('************************************************')
     payment_label_list = [items['payment_method'] for items in payment_mode_wise] 
     payment_list_count = [items['total_payments'] for items in payment_mode_wise] 
@@ -532,12 +532,9 @@ def get_inventory_data(request):
     
     today_sales_data_label = ['website sales']
     today_sales_data = [ today_sales_amount_website]
-    
-    print('************************************************')
-    print(total_sales_data)
-    print('************************************************')
-    
-    
+    # print('************************************************')
+    # print(total_sales_data)
+    # print('************************************************')
     
     return JsonResponse(data={
         'categories': labels,
@@ -560,3 +557,23 @@ def get_inventory_data(request):
 def Product_inventory(request):
     get_inventory_report = ProductInventory.objects.all().order_by('product_code')
     return render(request,'admininventory.html',{'inventory':get_inventory_report})
+
+
+def Admin_orders(request):
+    get_order_report = WebsiteOrder.objects.all().order_by('order_number')
+    # print(request.GET)
+    if 'accept_order_id' in request.GET:
+        order_no = request.GET.get('accept_order_id')
+        print(order_no)
+        Order = WebsiteOrder.objects.get(order_number=order_no)
+        Order.is_accepted=True
+        Order.save()
+    return render(request,'adminorders.html',{'orders':get_order_report})
+
+def Admin_order_items(request,order_number):
+    get_order_items_report = WebsiteOrderItems.objects.filter(order_number_id=order_number)
+    data = list(get_order_items_report.values())
+    df = pd.DataFrame(data)
+    # print(df)
+    
+    return HttpResponse(get_order_items_report)

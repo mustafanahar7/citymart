@@ -12,7 +12,7 @@
         {% if data %}
             {% for img , img_name in data %}
                 <a href='/categorywise/{{img_name}}' ><div class="category-card">
-                    <img src="{% static 'images/category/{{img}}' %}" alt="Category 1">
+                    <img src="{% static 'images/category/'|add:img %}" alt="Category 1">
                     <h5>{{img_name}}</h5>
                 </div></a>
             {% endfor %}

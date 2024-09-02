@@ -40,6 +40,8 @@ urlpatterns = [
     path('download_template/', views.download_product_template, name='download_template'),
     path('api/inventory-data/', views.get_inventory_data, name='get_inventory_data'),
     path('product-invenoty/', views.Product_inventory, name='admin_product_inventory'),
+    path('admin-order/', views.Admin_orders, name='admin_orders'),
+    path('admin-order-items/<str:order_number>', views.Admin_order_items, name='admin_order_items'),
 ]
 
 if settings.DEBUG:

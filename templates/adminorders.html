@@ -1,0 +1,116 @@
+{% extends 'adminnavbar.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/admininventory.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+{% endblock css %}
+
+{% block main_content %}
+    {% if orders %}
+
+    <div class="container ml-4">
+            <!-- Search Bar -->
+             <div class="input-group mb-3">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
+                </span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by ORD No customer name or mobile number" aria-label="Search" aria-describedby="searchIcon">
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover" id="ordertable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order Number</th>
+                             <th scope="col">Order Date</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Customer Mobile</th>
+                            <th scope="col">Customer Address</th>
+                            <th scope="col">Bill Amount</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.order_number }}</td>
+                                <td>{{ order.order_date }}</td>
+                                <td>{{ order.customer_name }}</td>
+                                <td>{{ order.customer_mobile_number}}</td>
+                                <td>{{ order.customer_address }}</td>
+                                <td>{{ order.bill_amount }}</td>
+
+                                {% if order.is_accepted %}
+                                    <td style="color:green;">Accepted</td>
+                                {% else %}
+                                    <td style="color:red;">Un-Accepted</td>
+                                {% endif %}
+
+                                <td>
+                                    {% if order.is_accepted %}
+                                         <button class="btn btn-success" disabled>Accepted</button> 
+                                    {% else %}
+                                        <button class="btn btn-danger" onclick="acceptOrder(this, {{ order.order_number }})">Accept Order</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    {% else %}
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                No Order.
+            </div>
+        </div>
+    {% endif %}
+
+     <script>
+         function acceptOrder(button, orderId) {
+            fetch(`/admin-order/?accept_order_id=${orderId}`, { method: 'GET' })
+                .then(response => {
+                    if (response.ok) {
+                        button.textContent = 'Accepted';
+                        button.classList.remove('btn-danger');
+                        button.classList.add('btn-success');
+                        button.disabled = true;
+
+                        // Update the status in the same row
+                        const row = button.closest('tr');
+                        const statusCell = row.querySelector('td:nth-child(7)'); // Assuming status is the 7th column
+                        statusCell.textContent = 'Accepted';
+                        statusCell.style.color = 'green';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+       // JavaScript for filtering the table based on the search input
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll('#ordertable tbody tr');
+
+            rows.forEach(function(row) {
+                let productCode = row.cells[0].textContent.toUpperCase();
+                let productName = row.cells[2].textContent.toUpperCase();
+                let productCategory = row.cells[3].textContent.toUpperCase();
+
+                if (productCode.indexOf(filter) > -1 || productName.indexOf(filter) > -1 || productCategory.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+       
+    </script>
+
+
+{% endblock main_content %}
+
+
+   

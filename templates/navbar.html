@@ -75,17 +75,6 @@
             <div class="navbar-nav mx-auto bg-light pe-4 py-3 py-lg-0">
                 <a href="{% url 'homepage' %}" class="nav-item nav-link {% if request.path == '/home/' %}active{% endif%}">Home</a>
                 <a href="{% url 'categorypage' %}" class="nav-item nav-link {% if request.path == '/category/'%}active{% endif%}">Category</a>
-                {% comment %} <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu bg-light border-0 m-0">
-                        <a href="#" class="dropdown-item ">Features</a>
-                        <a href="#" class="dropdown-item">Free Quote</a>
-                        <a href="#" class="dropdown-item ">Our Team</a>
-                        <a href="#" class="dropdown-item ">Testimonial</a>
-                        <a href="#" class="dropdown-item">404 Page</a>
-                    </div>
-                </div> {% endcomment %}
-
                 <a href="{% url 'cartpage' %}" class="nav-item nav-link {% if request.path == '/cart/' %}active{% endif %}"><i class="fas fa-shopping-cart"></i> My Cart</a>
                 <a href="{% url 'contactpage' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
                 <a href="#" class="nav-item nav-link">About Us</a>
@@ -93,13 +82,8 @@
                 {% if not user.is_authenticated %}
                     <a href="{% url 'loginpage' %}" class="nav-item nav-link">Login</a>
                 {% else %}
-                    {% comment %} <a href="{% url 'logoutpage' %}" class="nav-item nav-link">Logout</a> {% endcomment %}
-                    <a href="{% url 'logoutpage' %}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Logout</a>
-                    <div class="dropdown-menu bg-light border-0 m-0">
-                        <a href="#" class="dropdown-item ">History</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        
-                    </div>
+                    <a href="{% url 'logoutpage' %}" class="nav-item nav-link">Logout</a>
+                    {% comment %} <a href="{% url 'logoutpage' %}" class="nav-item nav-link" data-bs-toggle="dropdown">Logout</a> {% endcomment %}
                 {% endif %} 
             </div>
             <div class="h-100 d-lg-inline-flex align-items-center d-none">
