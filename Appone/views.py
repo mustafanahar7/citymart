@@ -404,8 +404,12 @@ def Admin_navbar(request):
 
 @login_required
 def Admin_dashboard(request):
-    return render(request,"admindashboard.html")
-    
+    try:
+        user = CustomUser.objects.get(mobile_number=request.user , is_superuser=True)
+        return render(request,"admindashboard.html")
+    except Exception as e:
+        print(e)
+        return redirect('loginpage')   
     
 import pandas as pd
 import pangres
@@ -462,7 +466,17 @@ def Upload_product(request):
             filename = fs.save(category_name, category_img)
             uploaded_file_url = fs.url(filename)
             # return HttpResponse(f"Photo uploaded successfully: <a href='{uploaded_file_url}'>View Photo</a>")
-            return render(request,'upload_product.html',{'addcat':'New Category Added Successfully !!'})        
+            return render(request,'upload_product.html',{'addcat':'New Category Added Successfully !!'})   
+        
+        
+        if button_pressed=="add_productimg":
+            product_img = request.FILES.getlist('productImage')
+            fs = FileSystemStorage(location='media/products/')  # Specify the folder path
+            for files in product_img:
+                filename = fs.save(files.name, files)
+                print(product_img)
+            return render(request,'upload_product.html',{'addproductimg':'Product Image Uploaded !!'})
+                 
     return render(request,'upload_product.html')
 
 
@@ -557,6 +571,11 @@ def get_inventory_data(request):
 def Product_inventory(request):
     get_inventory_report = ProductInventory.objects.all().order_by('product_code')
     return render(request,'admininventory.html',{'inventory':get_inventory_report})
+
+
+def Customers(request):
+    customers = CustomUser.objects.all().order_by('date_joined')
+    return render(request,'customers.html',{'customers':customers})
 
 
 def Admin_orders(request):

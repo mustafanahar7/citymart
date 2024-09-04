@@ -1,0 +1,79 @@
+{% extends 'adminnavbar.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/admininventory.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+{% endblock css %}
+
+{% block main_content %}
+    {% if customers %}
+
+    <div class="container ml-4">
+            <!-- Search Bar -->
+             <div class="input-group mb-3">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
+                </span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by Name or Mobile number" aria-label="Search" aria-describedby="searchIcon">
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover" id="inventoryTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Mobile Number</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Join Date</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer.full_name }}</td>
+                                <td>{{ customer.mobile_number }}</td>
+                                <td>{{ customer.address }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.date_joined }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    {% else %}
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                No Customers.
+            </div>
+        </div>
+    {% endif %}
+
+     <script>
+       // JavaScript for filtering the table based on the search input
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll('#inventoryTable tbody tr');
+
+            rows.forEach(function(row) {
+                let CustomerName = row.cells[0].textContent.toUpperCase();
+                let MobileNumber = row.cells[1].textContent.toUpperCase();
+               
+
+                if (CustomerName.indexOf(filter) > -1 || MobileNumber.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+
+{% endblock main_content %}
+
+
+   

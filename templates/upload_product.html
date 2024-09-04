@@ -69,22 +69,22 @@
             <h2>Add Product Image</h2>
         </div>
         <div class="card-body">
-            {% if addcat %}
+            {% if addproductimg %}
                 <div class="alert alert-success mt-2 text-center" role="alert">
-                    <strong>{{addcat| capfirst}}</strong>
+                    <strong>{{addproductimg| capfirst}}</strong>
                 </div>
             {% endif %} 
-            <form id='uploadcategoryform' action="{% url 'uploadproduct' %}" method="post" enctype="multipart/form-data">
+            <form id='uploadproduct_img_form' action="{% url 'uploadproduct' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     {% comment %} <label for="category_name">Category Name</label>
                     <input type="text" class="form-control" name="category_name" id="category_name" required>
                     <hr> {% endcomment %}
-                    <label for="categoryFile">Select product Image</label>
-                    <input type="file" class="form-control-file" id="productImage" name="productImage" accept=".jpg, .png, .jpeg" required>
+                    <label for="productImage">Select product Image</label>
+                    <input type="file" class="form-control-file" id="productImage" name="productImage" accept=".jpg, .png, .jpeg" multiple required>
                 </div>
-                <input type="hidden" id="button_pressed_category" name="button_pressed" value="">
-                <button type="button" class="btn btn-danger btn-block" id='add_category' name="add_category" onclick="addcategory('add_category')">Add</button>
+                <input type="hidden" id="button_pressed_productimg" name="button_pressed" value="">
+                <button type="button" class="btn btn-danger btn-block" id='add_productimg' name="add_productimg" onclick="addproduct_img('add_productimg')">Add</button>
             </form>
         </div>
     </div>
@@ -108,7 +108,13 @@
         console.log('Add category button clicked');
         document.getElementById('button_pressed_category').value = button;
         document.getElementById('uploadcategoryform').submit();
-    } 
+    }
+    
+    function addproduct_img(button){
+        console.log('Add category button clicked');
+        document.getElementById('button_pressed_productimg').value = button;
+        document.getElementById('uploadproduct_img_form').submit();
+    }
 
 </script>
 
