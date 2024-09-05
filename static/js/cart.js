@@ -20,8 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
       total += itemTotal;
     });
     totalAmountEl.textContent = total.toFixed(2);
+    finalAmountEl.textContent = total.toFixed(2);
     totalAmountInput.value = total.toFixed(2);
-    console.log(totalAmountInput.value);
+    // console.log(totalAmountInput.value);
+
+    console.log("Total Amount:", totalAmountEl.textContent);
+    console.log("Final Amount:", finalAmountEl.textContent);
   }
 
   cartItemsContainer.addEventListener("click", function (event) {
