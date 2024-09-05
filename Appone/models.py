@@ -49,7 +49,9 @@ class WebsiteOrder(models.Model):
     is_paid = models.BooleanField()
     is_accepted = models.BooleanField()
     order_date = models.DateField(auto_now=True)
-    bill_amount = models.FloatField()
+    bill_mrp_amount = models.FloatField()
+    bill_net_amount = models.FloatField(default=0 , blank=True)
+    discount = models.FloatField(default=0 , blank=True)
     user_name = models.CharField(max_length=50)
     
     

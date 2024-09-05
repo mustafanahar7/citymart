@@ -216,6 +216,7 @@ def Add_to_cart(request):
                         'unit':product_unit,
                         'price':get_product.selling_price,
                         'mrp':get_product.mrp,
+                        'discount':float(get_product.mrp - get_product.selling_price),
                         'user':get_user_info.mobile_number,
                         })
         
@@ -237,7 +238,7 @@ def send_order_confirmation_email(order, order_items):
         'customer_name': order.customer_name,
         'order_number': order.order_number,
         'order_items': order_items,
-        'total_bill_amount': order.bill_amount,
+        'total_bill_amount': order.bill_net_amount,
         'address':order.customer_address,
     })
     # plain_message = strip_tags(order_email_template)
@@ -291,11 +292,19 @@ def Cart(request):
             # Update session cart_list
             request.session['cart_list'] = updated_cart_list
             request.session.modified = True  # Ensure changes are saved
-            grand_amount=0
+            
+            grand_net_amount=0
+            discount = 0
+            grand_mrp_amount = 0 
             for item in updated_cart_list:
-                grand_amount += item['quantity']*item['price']
+                grand_net_amount += item['quantity']*item['price']
+                grand_mrp_amount += item['quantity']*item['mrp']
+                discount +=item['discount']
                 
                 
+                
+            # print('Mrp Amount - ',grand_mrp_amount)
+            # print('Discount - ',discount)
             # print('Grand Amount - ',grand_amount)
             # print('********************')
             # print(request.session['cart_list'])
@@ -309,7 +318,7 @@ def Cart(request):
             signature_id = request.POST.get('razorpay_signature')
             
             client = razorpay.Client(auth=(settings.KEY,settings.SECRET))
-            payment = client.order.create(data={'amount':float(grand_amount)*100 , 'currency':'INR','payment_capture':1})
+            payment = client.order.create(data={'amount':float(grand_net_amount)*100 , 'currency':'INR','payment_capture':1})
             
             # print('********************')
             # print('Paymeny Amount - ',payment)
@@ -330,13 +339,16 @@ def Cart(request):
                                                     payment_id=payment_id,
                                                     is_paid=is_paid,
                                                     is_accepted=is_accepted,
-                                                    bill_amount = grand_amount,
+                                                    bill_net_amount = grand_net_amount,
+                                                    bill_mrp_amount = grand_mrp_amount,
+                                                    discount=discount,
                                                     user_name=user_details.email
                                                     )
             
             for item in updated_cart_list:
                 
                 total_amount = item['price']*item['quantity']
+                
                 
                 order_items.append({
                 'order_number':store_order.order_number,
@@ -345,6 +357,8 @@ def Cart(request):
                 'price': item['price'],
                 'product_qty' :item['quantity'],
                 'total_amount':total_amount,
+                'mrp':item['mrp'],
+                'discount':item['discount']
                 # 'gross_amount':grand_amount,
                 })
                 

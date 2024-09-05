@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +74,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src='https://seeklogo.com/images/M/mt-logo-158D9F5A5E-seeklogo.com.png' alt='img' class='company-logo'/>
+            <img src="{% static 'images/logo/logo1.png' %}" alt='img' class='company-logo'/>
             <h1 class="company-name">City Mart</h1>
         </div>
         <div class="content">
@@ -87,6 +88,8 @@
                         <th>Product Name</th>
                         <th>Unit</th>
                         <th>Qty</th>
+                        <th>Mrp</th>
+                        <th>Discount</th>
                         <th>Price</th>
                         <th>Total Price</th>
                     </tr>
@@ -97,6 +100,8 @@
                         <td>{{ item.product_name }}</td>
                         <td>{{ item.product_unit }}</td>
                         <td>{{ item.product_qty }}</td>
+                        <td>{{ item.mrp }}</td>
+                        <td>{{ item.discount }}</td>
                         <td>₹{{ item.price }}</td>
                         <td>₹{{ item.total_amount }}</td>
                     </tr>
@@ -104,7 +109,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="4" style="text-align: right;">Total Amount:</th>
+                        <th colspan="6" style="text-align: right;">Total Amount:</th>
                         <th>₹ {{ total_bill_amount }}</th>
                     </tr>
                 </tfoot>

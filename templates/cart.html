@@ -53,8 +53,9 @@
                         <div class="item-details">
                             <h3>{{ item.product_name }}</h3>
                             <p>{{ item.unit }}</p>
-                            <input type="hidden" value={{item.mrp}} id="mrp">
-                            <p>MRP : <s>₹<span class="mrp">{{item.mrp}}</span></s> <b>₹<span class="price">{{ item.price }}</span></b></p>
+                            <span type ="hidden" class="mrp">{{item.mrp}}</span>
+
+                            <p>MRP : <s>₹<span class="MRP">{{item.mrp}}</span></s> <b>₹<span class="price">{{ item.price }}</span></b></p>
                         </div>
                         <div class="item-quantity">
                             <button type="button" class="decrease">-</button>
@@ -80,10 +81,10 @@
                 </div>
                 <div class="cart-total">
                     <input type="hidden" id="grand-total" name="grand_total" value="0.00">
-                    <h4>Total MRP: ₹ <span id="total-amount">0.00</span></h4>
-                    <h4>Discount: ₹ <span id="discount-amount">0.00</span></h4>
+                    <h4>Total Amount -  ₹ <span id="total-amount">0.00</span></h4>
+                    <h4>Discount - ₹ <span id="discount-amount">0.00</span></h4>
                     <hr>
-                    <h3>Final Bill: ₹ <span id="final-amount">0.00</span></h3>
+                    <h3>Bill Amount - ₹ <span id="final-amount">0.00</span></h3>
                 </div>
 
 
@@ -154,7 +155,7 @@
                 "currency": "INR",
                 "name": "City Mart",
                 "description": "Test Transaction",
-                "image": "https://seeklogo.com/images/M/mt-logo-158D9F5A5E-seeklogo.com.png",
+                "image": "{% static 'images/logo/log1.png '%}",
                 "order_id": "{{ payment_id }}", // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                 "handler": function (response) {
                     document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
@@ -179,7 +180,7 @@
             document.getElementById('rzp-button1').onclick = function (e) {
                 e.preventDefault();
                 // Get the grand total amount and set it in the Razorpay options
-                const grandTotal = parseFloat(document.getElementById('total-amount').textContent) * 100;
+                const grandTotal = parseFloat(document.getElementById('final-amount').textContent) * 100;
     // Convert to paise
                 options.amount = grandTotal.toFixed(0); // Ensure it's an integer value
                 

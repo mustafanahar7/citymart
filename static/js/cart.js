@@ -7,19 +7,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function calculateTotal() {
     let total = 0;
+    let mrptotal = 0;
+    let discount = 0;
+
     document.querySelectorAll(".cart-item").forEach((row) => {
       const quantity = parseInt(row.querySelector(".qty").textContent, 10);
       const price = parseFloat(row.querySelector(".price").textContent);
+      const mrp = parseFloat(row.querySelector(".mrp").textContent);
       // const mrp = document.getElementById("mrp");
 
       // console.log(mrp);
 
       const itemTotal = quantity * price;
+      const mrpitemTotal = quantity * mrp;
+
       row.querySelector(".item-total-amount").textContent =
         itemTotal.toFixed(2);
       total += itemTotal;
+      mrptotal += mrpitemTotal;
     });
-    totalAmountEl.textContent = total.toFixed(2);
+
+    discount = mrptotal - total;
+
+    totalAmountEl.textContent = mrptotal.toFixed(2);
+    discountAmountEl.textContent = discount.toFixed(2);
     finalAmountEl.textContent = total.toFixed(2);
     totalAmountInput.value = total.toFixed(2);
     // console.log(totalAmountInput.value);
