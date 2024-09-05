@@ -126,7 +126,26 @@ def HomePage(request):
         })
     
     
-    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data})
+    flour_product = ProductInventory.objects.filter(product_category="Flour (Atta)")
+    unique_product_flour = flour_product.values('product_name').distinct()
+    
+    flour_product_data = []
+    for product in unique_product_flour:
+        units = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
+        price = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
+        mrp = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
+         
+        product_unit_and_price = zip(units,price,mrp)    
+        # print('<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>.')
+        # print(product_unit_and_price)
+        flour_product_data.append({
+            'name': product['product_name'],
+            'units': product_unit_and_price,  # This will be a list of distinct units
+            'image': flour_product.filter(product_name=product['product_name']).first().product_image  # Get the image URL
+            
+        })
+    
+    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data})
 
 def CategoryPage(request):
     dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')
@@ -480,8 +499,13 @@ def Upload_product(request):
             category_name = request.POST.get('category_name')
             category_img = request.FILES.get('categoryFile')
             
-            fs = FileSystemStorage(location='static/images/category')  # Specify the folder path
-            filename = fs.save(category_name, category_img)
+            file , file_exten = os.path.splitext(category_img.name)
+            
+            full_file_name = f"{category_name}{file_exten}"
+            
+            # fs = FileSystemStorage(location='static/images/category')  # Specify the folder path
+            fs = FileSystemStorage(location=os.path.join(settings.BASE_DIR, 'static','images','category')) 
+            filename = fs.save(full_file_name, category_img)
             uploaded_file_url = fs.url(filename)
             # return HttpResponse(f"Photo uploaded successfully: <a href='{uploaded_file_url}'>View Photo</a>")
             return render(request,'upload_product.html',{'addcat':'New Category Added Successfully !!'})   
@@ -489,7 +513,7 @@ def Upload_product(request):
         
         if button_pressed=="add_productimg":
             product_img = request.FILES.getlist('productImage')
-            fs = FileSystemStorage(location='media/products/')  # Specify the folder path
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT,'products') ) # Specify the folder path
             for files in product_img:
                 filename = fs.save(files.name, files)
                 print(product_img)
@@ -500,7 +524,7 @@ def Upload_product(request):
 
 def download_product_template(request):
     # Define the path to the template file
-    template_path = 'D:\personal proj\project1\citymart\excelfiles\Product Inventory Template.xlsx'
+    template_path = os.path.join(settings.BASE_DIR, 'excelfiles', 'Product Inventory Template.xlsx')
     
     # Open the file in binary mode
     with open(template_path, 'rb') as file:
@@ -553,10 +577,10 @@ def get_inventory_data(request):
     # shop_sales_list_count = [items['total_orders'] for items in last_three_day_shop_sales_report] 
     
     
-    total_sales_amount_website = WebsiteOrder.objects.aggregate(Sum('bill_amount'))['bill_amount__sum'] or 0
+    total_sales_amount_website = WebsiteOrder.objects.aggregate(Sum('bill_net_amount'))['bill_net_amount__sum'] or 0
     # total_sales_amount_shop = salesCustomerData.objects.aggregate(Sum('total_sale_amount'))['total_sale_amount__sum'] or 0
     
-    today_sales_amount_website = WebsiteOrder.objects.filter(order_date=current_date).aggregate(Sum('bill_amount'))['bill_amount__sum'] or 0
+    today_sales_amount_website = WebsiteOrder.objects.filter(order_date=current_date).aggregate(Sum('bill_net_amount'))['bill_net_amount__sum'] or 0
     # today_sales_amount_shop = salesCustomerData.objects.filter(sales_date=current_date).aggregate(Sum('total_sale_amount'))['total_sale_amount__sum'] or 0
     
     total_sales_data_label = ['website sales']

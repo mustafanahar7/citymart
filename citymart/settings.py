@@ -39,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Appone'
+    'Appone',
+    'channels'
 ]
+
+# Define the ASGI application
+ASGI_APPLICATION = 'citymart.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

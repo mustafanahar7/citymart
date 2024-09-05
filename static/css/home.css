@@ -97,6 +97,17 @@
     animation: slideIn 0.5s ease-out, fadeOut 3s 1s ease-out forwards;
 }
 
+.flour {
+    position: relative;
+    /* Ensures the content within the div is positioned correctly */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('/static/images/category/Flour (Atta).webp') no-repeat center center;
+    /* Gradient and background image */
+    background-size: cover;
+    /* Ensures the image covers the entire div */
+    padding: 20px;
+    /* Add padding to give some space inside the div */
+}
 
 @keyframes slideIn {
     0% {

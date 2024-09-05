@@ -110,7 +110,7 @@
 
 
 <!-- Other Product -->
-<div class="container my-4">
+<div class="home-container my-4">
     <h2 class="text-center mb-4">Other Product</h2>
     <div class="category-grid">
          {% comment %} <h1>{{categ}}</h1> {% endcomment %} 
@@ -148,6 +148,58 @@
 </div>
 
 <!-- End of Other Product-->
+<hr>
+<!-- Flour Product -->
+{% if flour %}
+<div class="flour">
+<div class="home-container my-4">
+    <h2 class="text-center mb-4">Flour</h2>
+    <div class="category-grid"> 
+            {% for items in flour %}
+            <form method="POST" action="{% url 'add_to_cart' %}">
+                {% csrf_token %}
+                <div class="category-card">
+                    <img src="/media/{{items.image}}" alt="{{items.name}}" loading="lazy">
+                    <h5>{{items.name}}</h5>
+                    <h5>{{items.product_price}}</h5>
+
+                    <select class="form-select form-select-sm" name="product_unit">
+                        {% for units,price,mrp in items.units %}
+                        <option value="{{units}}">
+                            <p>{{units}}&nbsp; MRP: <span class="mrp-price"><del>₹{{mrp}}</del></span> <span class="discounted-price">₹ discounted {{price}}</span></p>
+                        </option>
+                        {% endfor %}
+                    </select>   
+
+                    <button class="btn btn-primary btn-sm w-100 mt-2" >Add to Cart</button>
+
+                    <input type="hidden" name="product_name" value="{{items.name}}">
+                </div>
+            </form>
+            {% endfor %}
+        {% else %}
+                <div class="alert alert-danger text-center">
+                    <strong>No Product Found</strong>
+                </div>   
+        <!-- Add more category cards as needed -->
+    </div>
+</div>
+</div>
+   {% endif %}
+<!-- End of Other Product-->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="{% static 'js/most_purchased_product.js' %}"></script>
 
