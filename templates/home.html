@@ -124,14 +124,12 @@
                     <h5>{{items.product_price}}</h5>
 
                     <select class="form-select form-select-sm" name="product_unit">
-                        {% for units,price in items.units %}
+                        {% for units,price,mrp in items.units %}
                         <option value="{{units}}">
-                            <span class="unit-price">
-                                <strong>{{units}}</strong> - <strong>₹ {{price}}</strong>
-                            </span>
+                            <p>{{units}}&nbsp; MRP: <span class="mrp-price"><del>₹{{mrp}}</del></span> <span class="discounted-price">₹ discounted {{price}}</span></p>
                         </option>
                         {% endfor %}
-                    </select>  
+                    </select>   
 
                     <button class="btn btn-primary btn-sm w-100 mt-2" >Add to Cart</button>
 

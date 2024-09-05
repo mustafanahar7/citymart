@@ -31,6 +31,7 @@ class ProductInventory(models.Model):
     product_category = models.CharField(max_length=50)
     qty = models.FloatField()
     cost = models.FloatField()
+    mrp = models.FloatField(blank=True ,default=0)
     selling_price = models.FloatField()
     first_purchase = models.DateField(auto_now=False, auto_now_add=False)
     last_purchase = models.DateField(auto_now=True)

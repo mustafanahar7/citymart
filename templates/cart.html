@@ -4,6 +4,34 @@
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        .cart-total {
+    background-color: #f8f8f8; /* Light background for contrast */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a floating effect */
+}
+
+.cart-total h2 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.cart-total span {
+    color: #000; /* Neutral black color for the amounts */
+    font-weight: 700;
+    font-size: 20px;
+}
+
+#final-amount {
+    color: #28a745; /* Green color for the final amount to highlight */
+}
+</style>
 {% endblock css %}
 
 {% block main_content %}
@@ -25,7 +53,7 @@
                     <div class="item-details">
                         <h3>{{ item.product_name }}</h3>
                         <p>{{ item.unit }}</p>
-                        <p>Price: Rs <span class="price">{{ item.price }}</span></p>
+                        <p>MRP : <s>₹<span class="mrp">{{item.mrp}}</span></s> <b>₹<span class="price">{{ item.price }}</span></b></p>
                     </div>
                     <div class="item-quantity">
                         <button type="button" class="decrease">-</button>
@@ -51,8 +79,12 @@
             </div>
             <div class="cart-total">
                 <input type="hidden" id="grand-total" name="grand_total" value="0.00">
-                <h2>Total Amount: Rs <span id="total-amount">0.00</span></h2>
+                <h4>Total MRP: ₹ <span id="total-mrp-amount">0.00</span></h4>
+                <h4>Discount: ₹ <span id="discount-amount">0.00</span></h4>
+                <hr>
+                <h3>Final Bill: ₹ <span id="final-amount">0.00</span></h3>
             </div>
+
 
             <div class="place-order mt-4">
                 <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
@@ -113,31 +145,7 @@
     </script>
 
     <script>
-         {% comment %} function showConfirmationPopup(buttonName1) {
-                Swal.fire({
-                title: 'Confirm Sale',
-                text: 'Are you sure you want to proceed with this sale?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, proceed!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit the form when the user confirms
-                        document.getElementById('button_pressed').value = buttonName1;
-
-                        // Make sure quantities are updated in hidden inputs before submitting
-                        document.querySelectorAll('.item-quantity').forEach(function(element) {
-                            const productCode = element.closest('.cart-item').getAttribute('data-id');
-                            const qty = element.querySelector('.qty').innerText.trim();
-                            document.getElementById('hidden-quantity-' + productCode).value = qty;
-                        });
-                        document.getElementById('order_place').submit();
-                    }
-                    });
-                } {% endcomment %}
-
+    
                 // Initialize Razorpay payment options
         var options = {
             "key": "rzp_live_tJQK6qtB5hVPyZ", // Enter the Key ID generated from the Dashboard

@@ -3,6 +3,49 @@
 {% load static %}
 {% block css %}
     <link href="{% static 'css/category.css' %}" rel="stylesheet">
+    <style>
+        .custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.custom-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.mrp-price {
+    text-decoration: line-through;
+    color: #999;
+}
+
+</style>
 {% endblock css %}
 
 {% block main_content %}
@@ -21,14 +64,17 @@
                     <h5>{{items.product_price}}</h5>
 
                     <select class="form-select form-select-sm" name="product_unit">
-                        {% for units,price in items.units %}
+                        {% for units,price,mrp in items.units %}
                         <option value="{{units}}">
-                            <span class="unit-price">
-                                <strong>{{units}}</strong> - <strong>₹ {{price}}</strong>
-                            </span>
+                            <p>{{units}}&nbsp; MRP: <span class="mrp-price"><del>₹{{mrp}}</del></span> <span class="discounted-price">₹ discounted {{price}}</span></p>
                         </option>
                         {% endfor %}
                     </select>  
+                    
+            
+
+
+
 
                     <button class="btn btn-primary btn-sm w-100 mt-2" >Add to Cart</button>
 

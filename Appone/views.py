@@ -113,8 +113,9 @@ def HomePage(request):
     for product in unique_product:
         units = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
         price = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
-        
-        product_unit_and_price = zip(units,price)    
+        mrp = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
+         
+        product_unit_and_price = zip(units,price,mrp)    
         # print('<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>.')
         # print(product_unit_and_price)
         product_data.append({
@@ -176,10 +177,11 @@ def CategoryWise(request,category):
     for product in unique_product:
         units = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
         price = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
+        mrp = get_product.filter(product_name=product['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
         
         # print('<<<<<<<<<,')
         # print(units)
-        product_unit_and_price = zip(units,price)    
+        product_unit_and_price = zip(units,price,mrp)    
         # print('<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>.')
         # print(product_unit_and_price)
         product_data.append({
@@ -213,6 +215,7 @@ def Add_to_cart(request):
                         'product_name': product_name,
                         'unit':product_unit,
                         'price':get_product.selling_price,
+                        'mrp':get_product.mrp,
                         'user':get_user_info.mobile_number,
                         })
         
@@ -440,6 +443,7 @@ def Upload_product(request):
                             'Product Category':'product_category',
                             'Quantity':'qty',
                             'Product Cost':'cost',
+                            'MRP':'mrp',
                             'Selling Price':'selling_price',
                             'First Purchase Date':'first_purchase',
                             'Last Purchase Date':'last_purchase'}
