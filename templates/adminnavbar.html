@@ -34,7 +34,7 @@
                 <img src="{% static 'images/logo/logo1.png' %}" alt="CityMart Logo">
             </div>
             <ul>
-                <li><a href="{% url 'admindashboardpage' %}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li class="{% if request.path == '/admindashboardpage/' %}active{% endif %}"><a href="{% url 'admindashboardpage' %}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
                 <li><a href="{% url 'admin_product_inventory' %}"><i class="fas fa-box"></i> <span>Products</span></a></li>
                 <li><a href="{% url 'uploadproduct' %}"><i class="fas fa-upload"></i> <span>Upload Product File</span></a></li>
                 <li><a href="{% url 'admin_orders' %}"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>

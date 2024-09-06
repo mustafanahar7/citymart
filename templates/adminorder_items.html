@@ -1,0 +1,57 @@
+{% extends 'adminnavbar.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/admininventory.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+{% endblock css %}
+
+{% block main_content %}
+    {% if data %}
+
+    <div class="container ml-4">
+            
+            <h2 class="text-center">Order No. - {{ order_number }}</h2>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover" id="ordertable">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Product Unit</th>
+                            <th scope="col">Product  Category</th>
+                            <th scope="col">Qty Ordered</th>
+                            <th scope="col">MRP</th>
+                            <th scope="col">Discounted Price</th>
+                            <th scope="col">Net Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td> {{ forloop.counter }} </td>
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.product_unit }}</td>
+                                <td>{{ item.product_category }}</td>
+                                <td>{{ item.qty}}</td>
+                                <td>{{ item.product_MRP_price }}</td>
+                                <td>{{ item.product_price }}</td>
+                                <td>{{ item.total_amount }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    {% else %}
+        <div class="container mt-5">
+            <div class="alert alert-info" role="alert">
+                No Order.
+            </div>
+        </div>
+    {% endif %}
+
+
+
+{% endblock main_content %}

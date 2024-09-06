@@ -144,6 +144,38 @@
     margin-left: 10px;
 }
 
+/* new */
+
+ .cart-total {
+     background-color: #f8f8f8;
+     /* Light background for contrast */
+     padding: 20px;
+     border-radius: 10px;
+     margin-top: 20px;
+     text-align: center;
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+     /* Subtle shadow for a floating effect */
+ }
+
+ .cart-total h2 {
+     font-size: 18px;
+     margin: 10px 0;
+     color: #333;
+     font-weight: 500;
+ }
+
+ .cart-total span {
+     color: #000;
+     /* Neutral black color for the amounts */
+     font-weight: 700;
+     font-size: 20px;
+ }
+
+ #final-amount {
+     color: #28a745;
+     /* Green color for the final amount to highlight */
+ }
+
 @media (max-width: 768px) {
     .cart-item {
         flex-direction: column;
@@ -153,10 +185,15 @@
 
     .item-details,
     .item-quantity,
-    .item-total,
-    .item-delete {
+    .item-total{
         text-align: left;
         margin-bottom: 10px;
+    }
+
+    /* Keep the delete button aligned to the right */
+    .item-delete {
+        margin-top: 10px;
+        margin-left: auto;
     }
 
     .cart-total {

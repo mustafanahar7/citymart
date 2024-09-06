@@ -92,6 +92,13 @@ body {
     align-items: center;
 }
 
+.sidebar ul li.active a {
+    background-color: #DF0000;
+    /* Active background color */
+    color: white;
+    /* Active text color */
+}
+
 .sidebar ul li a:hover {
     background-color: #DF0000;
     color: #fff;

@@ -59,6 +59,7 @@ class WebsiteOrderItems(models.Model):
     order_number = models.ForeignKey("Appone.WebsiteOrder", on_delete=models.CASCADE , related_name="orderitems")
     product_code = models.ForeignKey("Appone.ProductInventory", on_delete=models.CASCADE , related_name="products")
     qty = models.IntegerField()
+    product_mrp_price = models.FloatField(default=0)
     product_price = models.FloatField()
     total_amount = models.FloatField()
     

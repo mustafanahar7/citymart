@@ -9,28 +9,36 @@
     {% if orders %}
 
     <div class="container ml-4">
-            <!-- Search Bar -->
-             <div class="input-group mb-3">
-                <span class="input-group-text" id="searchIcon">
-                    <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
-                </span>
-                <input type="text" id="searchInput" class="form-control" placeholder="Search by ORD No customer name or mobile number" aria-label="Search" aria-describedby="searchIcon">
-            </div>
-
-            <div class="date-filter" style="display: flex; align-items: flex-end; gap: 15px; background-color: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
-                <div class="form-group">
-                    <label for="startDate" style="font-weight: bold; color: #495057;">Start Date:</label>
-                    <input type="date" id="startDate" class="form-control" style="border-radius: 4px; border: 1px solid #ced4da;">
+       
+            <div class="filter-section">
+                <!-- Search Bar -->
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="searchIcon">
+                        <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
+                    </span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by ORD No, customer name or mobile number" aria-label="Search" aria-describedby="searchIcon">
                 </div>
-                            
-                <div class="form-group">
-                    <label for="endDate" style="font-weight: bold; color: #495057;">End Date:</label>
-                    <input type="date" id="endDate" class="form-control" style="border-radius: 4px; border: 1px solid #ced4da;">
-                </div>
-
-                <button type="button" class="btn btn-primary" onclick="filterTable()" style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; border: none; font-weight: bold;">Filter</button>
+                
+                 <!-- Filter -->
+                <form class="filter-form" onsubmit="return false;">
+                    <div class="form-row align-items-end">
+                        <div class="form-group col-md-3">
+                            <label for="startDate" class="font-weight-bold text-dark">Start Date</label>
+                            <input type="date" class="form-control form-control-sm" id="startDate">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="endDate" class="font-weight-bold text-dark">End Date</label>
+                            <input type="date" class="form-control form-control-sm" id="endDate">
+                        </div>
+                        <div class="form-group col-md-6 d-flex align-items-end">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info btn-sm" onclick="filterTable()"><i class="fas fa-filter"></i></button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="clearFilters()"> <i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-
 
 
             <!-- Table -->
@@ -43,27 +51,30 @@
                             <th scope="col">Customer Name</th>
                             <th scope="col">Customer Mobile</th>
                             <th scope="col">Customer Address</th>
+                            <th scope="col">MRP Bill Amount</th>
+                            <th scope="col">Discount</th>
                             <th scope="col">Bill Amount</th>
-                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for order in orders %}
-                            <tr>
-                                <tr data-date="{{ order.order_date|date:'Y-m-d' }}">
-                                <td>{{ order.order_number }}</td>
+                           
+                            <tr onclick="window.location.href='{% url 'admin_order_items' order.order_number %}'" style="cursor:pointer;" data-date="{{ order.order_date|date:'Y-m-d' }}">
+                                <td class="text-center fw-bold">{{ order.order_number }}</td>
                                 <td>{{ order.order_date }}</td>
                                 <td>{{ order.customer_name }}</td>
                                 <td>{{ order.customer_mobile_number}}</td>
                                 <td>{{ order.customer_address }}</td>
-                                <td>{{ order.bill_amount }}</td>
+                                <td>{{ order.bill_mrp_amount }}</td>
+                                <td>{{ order.discount }}</td>
+                                <td>{{ order.bill_net_amount }}</td>
 
-                                {% if order.is_accepted %}
+                                {% comment %} {% if order.is_accepted %}
                                     <td style="color:green;">Accepted</td>
                                 {% else %}
                                     <td style="color:red;">Un-Accepted</td>
-                                {% endif %}
+                                {% endif %} {% endcomment %}
 
                                 <td>
                                     {% if order.is_accepted %}
@@ -73,6 +84,7 @@
                                     {% endif %}
                                 </td>
                             </tr>
+                        
                         {% endfor %}
                     </tbody>
                 </table>
@@ -127,7 +139,20 @@
 
         }
 
+        function clearFilters() {
+            // Clear the date inputs
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
 
+            // Show all rows
+            const table = document.getElementById('ordertable');
+            const rows = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+                rows[i].style.display = ''; // Show row
+            }
+
+        }
 
 
 
@@ -140,8 +165,9 @@
                 let productCode = row.cells[0].textContent.toUpperCase();
                 let productName = row.cells[2].textContent.toUpperCase();
                 let productCategory = row.cells[3].textContent.toUpperCase();
+                let Action = row.cells[8].textContent.toUpperCase();
 
-                if (productCode.indexOf(filter) > -1 || productName.indexOf(filter) > -1 || productCategory.indexOf(filter) > -1) {
+                if (productCode.indexOf(filter) > -1 || productName.indexOf(filter) > -1 || productCategory.indexOf(filter) > -1 || Action.indexOf(filter) > -1 ) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';

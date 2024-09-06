@@ -4,34 +4,6 @@
         <link rel="stylesheet" href="{% static 'css/cart.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-        <style>
-            .cart-total {
-        background-color: #f8f8f8; /* Light background for contrast */
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a floating effect */
-    }
-
-    .cart-total h2 {
-        font-size: 18px;
-        margin: 10px 0;
-        color: #333;
-        font-weight: 500;
-    }
-
-    .cart-total span {
-        color: #000; /* Neutral black color for the amounts */
-        font-weight: 700;
-        font-size: 20px;
-    }
-
-    #final-amount {
-        color: #28a745; /* Green color for the final amount to highlight */
-    }
-    </style>
     {% endblock css %}
 
     {% block main_content %}
@@ -53,7 +25,7 @@
                         <div class="item-details">
                             <h3>{{ item.product_name }}</h3>
                             <p>{{ item.unit }}</p>
-                            <span type ="hidden" class="mrp">{{item.mrp}}</span>
+                            <span class="mrp" style="display: none;">{{item.mrp}}</span>
 
                             <p>MRP : <s>₹<span class="MRP">{{item.mrp}}</span></s> <b>₹<span class="price">{{ item.price }}</span></b></p>
                         </div>
@@ -66,7 +38,7 @@
                         <input type="hidden" name="quantity_{{ item.product_code }}" id="hidden-quantity-{{ item.product_code }}" value="{{ item.quantity|default:1 }}">
 
                         <div class="item-total">
-                            Rs <span class="item-total-amount">{{ item.price|floatformat:2 }}</span>
+                            ₹ <span class="item-total-amount">{{ item.price|floatformat:2 }}</span>
                         </div>
                         <div class="item-delete">
                             <button type="button" class="delete-item">

@@ -386,6 +386,7 @@ def Cart(request):
                     product_code_id = item['product_code'],
                     qty =item['quantity'],
                     product_price = item['price'],
+                    product_mrp_price = item['mrp'],
                     total_amount =  total_amount  
                 )
                 
@@ -632,9 +633,27 @@ def Admin_orders(request):
     return render(request,'adminorders.html',{'orders':get_order_report})
 
 def Admin_order_items(request,order_number):
-    get_order_items_report = WebsiteOrderItems.objects.filter(order_number_id=order_number)
-    data = list(get_order_items_report.values())
-    df = pd.DataFrame(data)
+    get_order_items_report = WebsiteOrderItems.objects.filter(order_number_id=order_number).select_related('product_code')
+    data = []
+
+    # Loop through the order items and extract the relevant details
+    for item in get_order_items_report:
+        data.append({
+            'order_number': item.order_number.order_number,
+            'product_code': item.product_code.product_code,
+            'product_name': item.product_code.product_name,
+            'product_category': item.product_code.product_category,
+            'product_unit': item.product_code.product_unit,
+            'qty': item.qty,
+            'product_MRP_price': item.product_mrp_price,
+            'product_price': item.product_price,
+            'total_amount': item.total_amount
+        })
+
+    # Convert the list of dictionaries into a pandas DataFrame
+    # df = pd.DataFrame(data)
+
+    # # Display the DataFrame
     # print(df)
     
-    return HttpResponse(get_order_items_report)
+    return render(request,'adminorder_items.html',{'data':data,'order_number':order_number})
