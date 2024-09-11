@@ -1,5 +1,5 @@
 .home-container {
-    margin: auto 30px;
+    margin: auto 20px;
 }
 
 .home-container h2 {
@@ -54,3 +54,28 @@
 }
 
 
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(4, 1fr);
+        /* 4 columns on smaller screens like tablets */
+    }
+}
+
+@media (max-width: 576px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 4 columns on mobile screens */
+    }
+
+    .category-card img {
+        height: 100px;
+        object-fit: cover;
+        /* Adjust the image size for mobile */
+    }
+
+    .category-card h5 {
+        font-size: 14px;
+        /* Slightly smaller font for mobile */
+    }
+}
