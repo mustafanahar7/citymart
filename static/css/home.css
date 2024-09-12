@@ -99,13 +99,25 @@
 
 .flour {
     position: relative;
-    background: linear-gradient(rgba(255, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    background: linear-gradient(rgba(255, 0, 0, 0.8), rgba(0, 0, 0, 0.5)),
         url('/static/images/category/Flour (Atta).webp') no-repeat center center;
     background-size: cover;
     padding: 20px;
 }
 
 .flour heading {
+    color: #ffffff;
+}
+
+.beverages {
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(18, 202, 253, 0.5)),
+        url('/static/images/category/Beverages.webp') no-repeat center center;
+    background-size: cover;
+    padding: 20px;
+}
+
+.beverages heading {
     color: #ffffff;
 }
 

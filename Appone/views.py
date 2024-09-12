@@ -127,25 +127,42 @@ def HomePage(request):
     
     
     flour_product = ProductInventory.objects.filter(product_category="Flour (Atta)")
-    unique_product_flour = flour_product.values('product_name').distinct()
+    unique_product_flour = flour_product.values('product_name').distinct()[:5]
+    
+    beverages_product = ProductInventory.objects.filter(product_category="Beverages")
+    unique_product_beverages = beverages_product.values('product_name').distinct()[:5]
     
     flour_product_data = []
-    for product in unique_product_flour:
-        units = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
-        price = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
-        mrp = flour_product.filter(product_name=product['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
+    beverages_product_data = []
+    
+    for flour,beverage in zip(unique_product_flour,unique_product_beverages):
+        units = flour_product.filter(product_name=flour['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
+        price = flour_product.filter(product_name=flour['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
+        mrp = flour_product.filter(product_name=flour['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
+        
+        bev_units = beverages_product.filter(product_name=beverage['product_name'],qty__gt=1).values_list('product_unit', flat=True).distinct()
+        bev_price = beverages_product.filter(product_name=beverage['product_name'],qty__gt=1).values_list('selling_price', flat=True).order_by('product_unit')
+        bev_mrp = beverages_product.filter(product_name=beverage['product_name'],qty__gt=1).values_list('mrp', flat=True).order_by('product_unit')
          
-        product_unit_and_price = zip(units,price,mrp)    
+        flour_unit_and_price = zip(units,price,mrp)
+        beverages_unit_and_price = zip(bev_units,bev_price,bev_mrp)    
         # print('<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>.')
         # print(product_unit_and_price)
         flour_product_data.append({
-            'name': product['product_name'],
-            'units': product_unit_and_price,  # This will be a list of distinct units
-            'image': flour_product.filter(product_name=product['product_name']).first().product_image  # Get the image URL
+            'name': flour['product_name'],
+            'units': flour_unit_and_price,  # This will be a list of distinct units
+            'image': flour_product.filter(product_name=flour['product_name']).first().product_image  # Get the image URL
+            
+        })
+        
+        beverages_product_data.append({
+            'name': beverage['product_name'],
+            'units': beverages_unit_and_price,  # This will be a list of distinct units
+            'image': beverages_product.filter(product_name=beverage['product_name']).first().product_image  # Get the image URL
             
         })
     
-    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data})
+    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data,'beverages':beverages_product_data})
 
 def CategoryPage(request):
     dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')

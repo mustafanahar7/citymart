@@ -36,17 +36,28 @@
 }
 
 .btn.btn-primary,
+.btn.btn-whatsapp,
 .btn.btn-outline-primary:hover,
 .btn.btn-secondary,
 .btn.btn-outline-secondary:hover {
     color: #FFFFFF;
 }
 
+
 .btn.btn-primary {
     background: var(--primary);
     border-color: #FFFFFF;
 }
 
+.btn.btn.btn-whatsapp {
+    background: #25D366;
+    border-color: #FFFFFF;
+}
+
+.btn.btn-whatsapp:hover {
+    background: darkgreen;
+    border-color: #FFFFFF;
+}
 
 .btn.btn-primary:hover {
     background: var(--secondary);
@@ -345,60 +356,6 @@
 }
 
 
-/*** Footer ***/
-.footer {
-    color: #7F8499;
-}
-
-.footer .btn.btn-link {
-    display: block;
-    margin-bottom: 5px;
-    padding: 0;
-    text-align: left;
-    color: #7F8499;
-    font-weight: normal;
-    text-transform: capitalize;
-    transition: .3s;
-}
-
-.footer .btn.btn-link::before {
-    position: relative;
-    content: "\f105";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    color: #7F8499;
-    margin-right: 10px;
-}
-
-.footer .btn.btn-link:hover {
-    color: var(--primary);
-    letter-spacing: 1px;
-    box-shadow: none;
-}
-
-.footer .btn.btn-square {
-    color: #7F8499;
-    border: 1px solid #7F8499;
-}
-
-.footer .btn.btn-square:hover {
-    color: var(--light);
-    border-color: var(--primary);
-}
-
-.footer .copyright {
-    padding: 25px 0;
-    border-top: 1px solid rgba(256, 256, 256, .1);
-}
-
-.footer .copyright a {
-    color: var(--primary);
-}
-
-.footer .copyright a:hover {
-    color: #FFFFFF;
-}
-
 
 #navbar_heading{
     color:#DF0000;
@@ -423,4 +380,71 @@
 .upload_data{
     display: flex;
     gap: 40px;
+}
+
+
+/*** Footer ***/
+.footer {
+    color: #000000;
+    background-color: #696E77;
+}
+
+.footer-logo {
+    width: 100px;
+    /* Adjust width as needed */
+    height: auto;
+    /* Maintain aspect ratio */
+}
+
+.footer .btn.btn-link {
+    display: block;
+    margin-bottom: 5px;
+    padding: 0;
+    text-align: left;
+    color: #000000;
+    font-weight: normal;
+    text-transform: capitalize;
+    transition: .3s;
+}
+
+.footer .btn.btn-link::before {
+    position: relative;
+    content: "\f105";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: #000000;
+    margin-right: 10px;
+}
+
+.footer .btn.btn-link:hover {
+    color: var(--primary);
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
+.footer .btn.btn-square {
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.footer .btn.btn-square:hover {
+    color: var(--dark);
+    border-color: var(--primary);
+}
+
+.footer .copyright {
+    padding: 25px 0;
+    border-top: 1px solid rgba(256, 256, 256, .1);
+}
+
+.footer .copyright a {
+    color: var(--primary);
+}
+
+.footer .copyright a:hover {
+    color: #000000;
+}
+
+.view-all {
+    text-decoration: double;
 }
