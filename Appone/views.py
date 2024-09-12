@@ -514,10 +514,10 @@ def Upload_product(request):
         
         if button_pressed=="add_productimg":
             product_img = request.FILES.getlist('productImage')
-            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT,'products') ) # Specify the folder path
+            fs = FileSystemStorage(location=os.path.join(settings.BASE_DIR,'media','products') ) # Specify the folder path
             for files in product_img:
                 filename = fs.save(files.name, files)
-                print(product_img)
+                # print(product_img)
             return render(request,'upload_product.html',{'addproductimg':'Product Image Uploaded !!'})
                  
     return render(request,'upload_product.html')
