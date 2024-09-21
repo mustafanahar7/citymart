@@ -11,10 +11,7 @@
         <div class="loader" id="loader"></div>
 
         <div class="cart-container mt-3">
-        <div class="header-container">
-                <h1>Your Cart</h1>
-                <h4 id="user">{{ user.full_name }}</h4>
-            </div>
+            <h1 class="text-center">Shopping Cart</h1>
             <!-- <form method="POST" action="{% url 'cartpage' %}"> -->
             <form method="POST" action="{% url 'cartpage' %}" id="order_place">
                 {% csrf_token %}

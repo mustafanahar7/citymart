@@ -84,7 +84,9 @@ def search_view(request):
 def HomePage(request):
     # print('<<<<<<<<<<<<<<<<<')
     # print(request.user)
-    
+    if 'cart_list' not in request.session:
+        request.session['cart_list']=[]
+    cart_item_length = len(request.session['cart_list'])
     ## Render the Category from folder
     dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')
     folder_list = os.listdir(dir)
@@ -171,7 +173,7 @@ def HomePage(request):
             
         })
     
-    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data,'beverages':beverages_product_data})
+    return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data,'beverages':beverages_product_data,'cart_count':cart_item_length})
 
 def CategoryPage(request):
     dir = os.path.join(settings.BASE_DIR, 'static', 'images', 'category')
@@ -651,7 +653,6 @@ def Customers(request):
 
 def Admin_orders(request):
     get_order_report = WebsiteOrder.objects.all().order_by('order_number')
-    # print(request.GET)
     if 'accept_order_id' in request.GET:
         order_no = request.GET.get('accept_order_id')
         print(order_no)
@@ -659,6 +660,7 @@ def Admin_orders(request):
         Order.is_accepted=True
         Order.save()
     return render(request,'adminorders.html',{'orders':get_order_report})
+
 
 def Admin_order_items(request,order_number):
     get_order_items_report = WebsiteOrderItems.objects.filter(order_number_id=order_number).select_related('product_code')
@@ -677,11 +679,12 @@ def Admin_order_items(request,order_number):
             'product_price': item.product_price,
             'total_amount': item.total_amount
         })
-
-    # Convert the list of dictionaries into a pandas DataFrame
-    # df = pd.DataFrame(data)
-
-    # # Display the DataFrame
-    # print(df)
-    
     return render(request,'adminorder_items.html',{'data':data,'order_number':order_number})
+
+
+def purchase_history(request):
+    customer = request.user
+    print('<<<<<<<<<<<<',customer)
+    purchase_history = WebsiteOrder.objects.filter(user_name=customer.email).order_by('-order_number')
+    print(purchase_history)
+    return render(request,'purchase_history.html',{'purchase_history':purchase_history})

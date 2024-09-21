@@ -44,6 +44,7 @@ urlpatterns = [
     path('admin-order/', views.Admin_orders, name='admin_orders'),
     path('admin-order-items/<str:order_number>', views.Admin_order_items, name='admin_order_items'),
     path('customers/', views.Customers, name='customers'),
+    path('purchase_history/', views.purchase_history, name='purchase_history'),
 ]
 
 if settings.DEBUG:

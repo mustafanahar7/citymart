@@ -76,7 +76,10 @@
             <div class="navbar-nav mx-auto bg-light pe-4 py-3 py-lg-0">
                 <a href="{% url 'homepage' %}" class="nav-item nav-link {% if request.path == '/home/' %}active{% endif%}">Home</a>
                 <a href="{% url 'categorypage' %}" class="nav-item nav-link {% if request.path == '/category/'%}active{% endif%}">Category</a>
-                <a href="{% url 'cartpage' %}" class="nav-item nav-link {% if request.path == '/cart/' %}active{% endif %}"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                <a href="{% url 'cartpage' %}" class="nav-item nav-link {% if request.path == '/cart/' %}active{% endif %}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">{{cart_count}}</span>
+                </a>
                 <a href="{% url 'contactpage' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
                 <a href="#" class="nav-item nav-link">About Us</a>
                 
@@ -89,12 +92,13 @@
             </div>
 
             <!-- Search Bar Start -->
-            <form class="d-flex" id="searchForm">
-                <div class="form-floating">
-                <input class="form-control me-2" type="search" placeholder="Search products" aria-label="Search" id="searchInput">
-                <label for="name">Search products</label>
+            <form id="searchForm">
+                <div class="form-floating me-3">
+                    <input class="form-control" type="search" placeholder="Search products" aria-label="Search" id="searchInput">
+                    <label for="name">Search products</label>
+                {% comment %} <button class="btn me-2" type="submit"><i class="fa-solid fa-magnifying-glass search-icon"></i></button> {% endcomment %}
                 </div>
-                <button class="btn me-2" type="submit"><i class="fa-solid fa-magnifying-glass search-icon"></i></button>
+                
                 {% comment %} <i class="fa-solid fa-magnifying-glass search-icon"></i> {% endcomment %}
             </form>
             <!-- Search Bar End -->
@@ -103,7 +107,12 @@
                 {% comment %} <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-facebook-f"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-twitter"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
-                <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href="https://www.instagram.com/citymart_dungapur?igsh=MWhkYjlyODlxd3N3NA==" target="_blank"><i class="fab fa-instagram"></i></a>
+                 {% if user.is_authenticated %}
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href="{% url 'purchase_history' %}"><i class="fa-solid fa-user"></i></a>
+                    <p class="m-0">{{ user.full_name }}</p>
+                </div>
+                {% endif %}
             </div>
 
         </div>
@@ -121,17 +130,17 @@
                 <div class="col-md-4">
                     <h1 class="text-dark mb-4"><img class="img-fluid footer-logo me-3" src="{% static 'images/logo/logo1.png' %}" alt="">City Mart</h1>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-4">
                     <h5 class="text-dark mb-4">Get In Touch</h5>
-                    <p><i class="fa fa-map-marker-alt me-3"></i>92 Shastri Colony, Dungarpur, India</p>
-                    <p><i class="fa fa-phone-alt me-3"></i>+91 9699596739</p>
-                    <p><i class="fa fa-envelope me-3"></i>xyz@gmail.com</p>
+                    <p><i class="fa fa-map-marker-alt me-2"></i>92 Shastri Colony, Dungarpur, India</p>
+                    <p><i class="fa fa-phone-alt me-2"></i>+91 9699596739</p>
+                    <p><i class="fa fa-envelope me-2"></i>citymart@gmail.com</p>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-4">
                     <h5 class="text-dark mb-4">Our Services</h5>
                     <a class="btn btn-link" href="">Free Home delivery</a>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-4">
                     <h5 class="text-dark mb-4">Follow Us</h5>
                     <div class="d-flex">
                         <a class="btn btn-square rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>

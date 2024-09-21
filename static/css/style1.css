@@ -461,3 +461,15 @@
     font-size: 18px;
     /* Adjust the size if desired */
 }
+
+/* Cart Count */
+.cart-count {
+    position: absolute;
+    background-color: #DF0000;
+    /* Change the background color */
+    color: white;
+    margin-left: 4px;
+    padding: 2px 4px;
+    border-radius: 50%;
+    font-size: 8px;
+}
