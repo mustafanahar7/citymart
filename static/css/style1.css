@@ -448,3 +448,16 @@
 .view-all {
     text-decoration: double;
 }
+
+/* search bar css */
+.search-icon {
+    position: absolute;
+    left: 10px;
+    /* Adjust the left position as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Change the color if desired */
+    font-size: 18px;
+    /* Adjust the size if desired */
+}

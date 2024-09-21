@@ -1,5 +1,5 @@
 from django.shortcuts import render , redirect
-from django.http import JsonResponse , HttpResponse
+from django.http import JsonResponse , HttpResponse, HttpResponseRedirect
 import os
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -9,12 +9,12 @@ from django.contrib.auth import authenticate, login , logout
 from sqlalchemy import create_engine
 from django.db.models import Count , Sum
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
 from .models import CustomUser , ContactUsForm , ProductInventory, WebsiteOrder , WebsiteOrderItems
 
 # engine = create_engine('postgresql+psycopg2://postgres:mustafabohra@localhost:5432/citymart')
 engine = create_engine('postgresql+psycopg2://mustafa:3KIzwhrFvXe8oy4XFRUfydq68a94T1Nj@dpg-cram02aj1k6c73ch26qg-a.oregon-postgres.render.com/citymart')
 
-# Create your views here.
 @csrf_exempt
 def RegistrationPage(request):
     msg=None
@@ -71,6 +71,15 @@ def SplashPage(request):
     return render(request,'splashpage.html')
 
 
+def search_view(request):
+    query = request.GET.get('q', '')  # Get the search query from the URL
+    results = ProductInventory.objects.filter(product_name__icontains=query,qty__gt=1) if query else ProductInventory.objects.none()  # Search query in product names (case-insensitive)
+
+    context = {
+        'results': results,
+        'query': query,
+    }
+    return render(request, 'search_results.html', context)
 
 def HomePage(request):
     # print('<<<<<<<<<<<<<<<<<')
@@ -257,10 +266,12 @@ def Add_to_cart(request):
                         })
         
     request.session['cart_list']=cart_list
-    message = f"Product {product_name} Added in Cart !!"
+    messages.success(request, f"Product {product_name} added to cart!")
     
-    return redirect('homepage')
-    return render(request,'home.html',{'cart_msg':message})
+    referer_url = request.META.get('HTTP_REFERER', 'homepage')
+    
+    return HttpResponseRedirect(referer_url)
+
     # return JsonResponse(cart_list,safe=False)
     # return JsonResponse({'product_code':get_product.product_code,'product':product_name,'unit':product_unit,'price':get_product.selling_price})
 

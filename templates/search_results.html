@@ -1,0 +1,37 @@
+{% extends 'navbar.html' %}  <!-- Ensure you extend your common base template -->
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/category.css' %}" rel="stylesheet">
+{% endblock css %}
+{% block main_content %}
+    <div class="container">
+        <h2>Search Results for "{{ query }}"</h2>
+
+        <div class="category-grid">
+        {% if results %}
+                {% for product in results %}
+                   <form method="POST" action="{% url 'add_to_cart' %}">
+                        {% csrf_token %}
+                        <div class="category-card">
+                            <img src="/media/{{product.product_image}}" alt="{{product.product_name}}" loading="lazy">
+                            <h5>{{product.product_name}}</h5>
+                            <h5>{{product.product_unit}}</h5>
+                            <h5>{{product.selling_price}}</h5>
+
+                            <button class="btn btn-primary btn-sm w-100 mt-2" >Add to Cart</button>
+                            
+                            <input type="hidden" name="product_unit" value="{{product.product_unit}}">
+                            <input type="hidden" name="product_name" value="{{product.product_name}}">
+                        </div>
+                    </form>
+                {% endfor %}
+             {% else %}
+                <div class="alert alert-danger text-center">
+                    <strong>No Product Found</strong>
+                </div>
+        {% endif %}
+        
+        <!-- Add more category cards as needed -->
+    </div>
+</div>
+{% endblock main_content%}
