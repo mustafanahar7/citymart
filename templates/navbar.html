@@ -91,29 +91,30 @@
                 {% endif %} 
             </div>
 
-            <!-- Search Bar Start -->
-            <form id="searchForm">
-                <div class="form-floating me-3">
-                    <input class="form-control" type="search" placeholder="Search products" aria-label="Search" id="searchInput">
-                    <label for="name">Search products</label>
-                {% comment %} <button class="btn me-2" type="submit"><i class="fa-solid fa-magnifying-glass search-icon"></i></button> {% endcomment %}
-                </div>
-                
-                {% comment %} <i class="fa-solid fa-magnifying-glass search-icon"></i> {% endcomment %}
-            </form>
-            <!-- Search Bar End -->
+           
 
-            <div class="h-100 d-lg-inline-flex align-items-center d-none">
+             <!-- Search Bar -->
+              <form id="searchForm">
+                <div class="me-3">
+                    <div class="input-group "> 
+                        <span class="input-group-text" id="searchIcon">
+                            <i class="bi bi-search"></i> <!-- Bootstrap Icon for search -->
+                        </span>
+                        <input class="form-control" type="search" placeholder="Search products" aria-label="Search" id="searchInput">
+                    </div>
+                </div>
+            </form>
+            <!-- End Search Bar -->
+
                 {% comment %} <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-facebook-f"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-twitter"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href=""><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
                  {% if user.is_authenticated %}
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center ml-2">
                     <a class="btn btn-square rounded-circle bg-light text-primary me-2 custom-icon-color" href="{% url 'purchase_history' %}"><i class="fa-solid fa-user"></i></a>
                     <p class="m-0">{{ user.full_name }}</p>
                 </div>
                 {% endif %}
-            </div>
 
         </div>
     </nav>

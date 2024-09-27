@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'citymart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'citymart',
-        'USER': 'mustafa',
-        'PASSWORD': '3KIzwhrFvXe8oy4XFRUfydq68a94T1Nj',
-        'HOST': 'dpg-cram02aj1k6c73ch26qg-a.oregon-postgres.render.com',  # Or your database server IP
+        'NAME': 'citymart_instance2_8kcu',
+        'USER': 'citymart_instance2_8kcu_user',
+        'PASSWORD': '67Sk6ODHKfEP8JwawpgGe1e6LVMNa7Ao',
+        'HOST': 'dpg-crrd912j1k6c73ee0qbg-a.oregon-postgres.render.com',  # Or your database server IP
         'PORT': '5432',        # Default PostgreSQL port
     }
 }
