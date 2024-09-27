@@ -13,7 +13,7 @@ from django.contrib import messages
 from .models import CustomUser , ContactUsForm , ProductInventory, WebsiteOrder , WebsiteOrderItems
 
 # engine = create_engine('postgresql+psycopg2://postgres:mustafabohra@localhost:5432/citymart')
-engine = create_engine('postgresql+psycopg2://mustafa:3KIzwhrFvXe8oy4XFRUfydq68a94T1Nj@dpg-cram02aj1k6c73ch26qg-a.oregon-postgres.render.com/citymart')
+engine = create_engine('postgresql+psycopg2://citymart_instance2_8kcu_user:67Sk6ODHKfEP8JwawpgGe1e6LVMNa7Ao@dpg-crrd912j1k6c73ee0qbg-a.oregon-postgres.render.com/citymart_instance2_8kcu')
 
 @csrf_exempt
 def RegistrationPage(request):
