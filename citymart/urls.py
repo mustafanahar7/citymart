@@ -30,6 +30,7 @@ urlpatterns = [
     path('login/',views.LoginPage,name="loginpage"),
     path('logout/',views.LogoutPage,name="logoutpage"),
     path('category/',views.CategoryPage,name="categorypage"),
+    path('aboutus/',views.aboutUs,name="aboutus"),
     path('categorywise/<str:category>',views.CategoryWise,name="categorywisepage"),
     path('contact/',views.ContactPage,name="contactpage"),
     path('addcart/',views.Add_to_cart,name="add_to_cart"),

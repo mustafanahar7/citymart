@@ -70,12 +70,6 @@
                                 <td>{{ order.discount }}</td>
                                 <td>{{ order.bill_net_amount }}</td>
 
-                                {% comment %} {% if order.is_accepted %}
-                                    <td style="color:green;">Accepted</td>
-                                {% else %}
-                                    <td style="color:red;">Un-Accepted</td>
-                                {% endif %} {% endcomment %}
-
                                 <td>
                                     {% if order.is_accepted %}
                                          <button class="btn btn-success" disabled>Accepted</button> 
@@ -108,11 +102,7 @@
                         button.classList.add('btn-success');
                         button.disabled = true;
 
-                        // Update the status in the same row
-                        const row = button.closest('tr');
-                        const statusCell = row.querySelector('td:nth-child(7)'); // Assuming status is the 7th column
-                        statusCell.textContent = 'Accepted';
-                        statusCell.style.color = 'green';
+
                     }
                 })
                 .catch(error => console.error('Error:', error));

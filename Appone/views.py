@@ -57,8 +57,6 @@ def LoginPage(request):
             return redirect('homepage')
         else:
             error_msg = "Invalid Credentials"
-        
-    
     return render(request,'loginpage.html',{'error_msg':error_msg})
 
 
@@ -172,7 +170,7 @@ def HomePage(request):
             'image': beverages_product.filter(product_name=beverage['product_name']).first().product_image  # Get the image URL
             
         })
-    
+
     return render(request,'home.html',{'data':files,'most_purchase_product':top_purchased_list,'categ':product_data,'flour':flour_product_data,'beverages':beverages_product_data,'cart_count':cart_item_length})
 
 def CategoryPage(request):
@@ -688,3 +686,9 @@ def purchase_history(request):
     purchase_history = WebsiteOrder.objects.filter(user_name=customer.email).order_by('-order_number')
     print(purchase_history)
     return render(request,'purchase_history.html',{'purchase_history':purchase_history})
+
+
+def aboutUs(request):
+    return render(request,'aboutus.html')
+
+

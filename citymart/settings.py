@@ -79,27 +79,27 @@ WSGI_APPLICATION = 'citymart.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'citymart',
-#         'USER': 'postgres',
-#         'PASSWORD': 'mustafabohra',
-#         'HOST': 'localhost',  # Or your database server IP
-#         'PORT': '5432',        # Default PostgreSQL port
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'citymart_instance2_8kcu',
-        'USER': 'citymart_instance2_8kcu_user',
-        'PASSWORD': '67Sk6ODHKfEP8JwawpgGe1e6LVMNa7Ao',
-        'HOST': 'dpg-crrd912j1k6c73ee0qbg-a.oregon-postgres.render.com',  # Or your database server IP
+        'NAME': 'citymart',
+        'USER': 'postgres',
+        'PASSWORD': 'mustafabohra',
+        'HOST': 'localhost',  # Or your database server IP
         'PORT': '5432',        # Default PostgreSQL port
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'citymart_instance2_8kcu',
+#         'USER': 'citymart_instance2_8kcu_user',
+#         'PASSWORD': '67Sk6ODHKfEP8JwawpgGe1e6LVMNa7Ao',
+#         'HOST': 'dpg-crrd912j1k6c73ee0qbg-a.oregon-postgres.render.com',  # Or your database server IP
+#         'PORT': '5432',        # Default PostgreSQL port
+#     }
+# }
 
 
 # DATABASES = {
